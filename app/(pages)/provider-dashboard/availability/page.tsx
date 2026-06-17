@@ -1,9 +1,12 @@
-import React from 'react'
+import AvailableTable from "@/app/_modules/availability/views/available-table";
+import React from "react";
 
 const AvailabilityPage = () => {
   return (
-    <div>AvailabilityPage</div>
-  )
-}
+    <div>
+      <AvailableTable />
+    </div>
+  );
+};
 
-export default AvailabilityPage
+export default AvailabilityPage;

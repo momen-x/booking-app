@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/providers", label: "Providers" },
   { href: "/bookings", label: "Bookings" },
   { href: "/provider-dashboard", label: "provider dashboard" },
+  { href: "/admin-dashboard", label: "Admin dashboard" },
 ];
 const Headers = () => {
   const router = useRouter();

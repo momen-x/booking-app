@@ -53,12 +53,12 @@ const ChangePasswordDialog = ({ children }: ChangePasswordDialogProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger className="inline-flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted/50">
         {children || (
-          <Button variant="outline" className="gap-2">
+          <>
             <Lock className="h-4 w-4" />
             Change Password
-          </Button>
+          </>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-md bg-card border-border">

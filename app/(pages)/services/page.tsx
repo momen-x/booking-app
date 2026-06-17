@@ -1,6 +1,6 @@
-import { Service } from "@/app/_modules/services/entity/service";
+import { getAllServices } from "@/app/_modules/services/utils/get-services";
 import ServiceList from "@/app/_modules/services/views/services-list";
-import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
+
 import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -9,11 +9,7 @@ export const metadata: Metadata = {
   description: "Best Booking App",
 };
 const ServicesPage = async () => {
-  const services = (await fetch(`${DYNAMIC_PAGE_API_URL}/api/services`, {
-    method: "GET",
-    credentials: "include",
-    next: { revalidate: 5 }, //
-  }).then((res) => res.json())) as Service[];
+  const services = await getAllServices();
   console.log("the services are : ", services);
   if (!services || services.length === 0) {
     return <div>No services available.</div>;

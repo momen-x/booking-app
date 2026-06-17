@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
@@ -18,14 +19,12 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 
-interface IProps {
-  userId: string;
-  businessName: string;
-  location?: string;
-  description?: string;
-}
+const AddProviderForm = () => {
+  const params = useSearchParams();
+  const userId = params.get("userId") ?? "";
+  const businessName = params.get("businessName") ?? "";
+  const location = params.get("location") ?? "";
 
-const AddProviderForm = ({ userId, businessName, location }: IProps) => {
   const router = useRouter();
   const { mutate: handleCreateProvider, isPending } = useAddProvider();
 

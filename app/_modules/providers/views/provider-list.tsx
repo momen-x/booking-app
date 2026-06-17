@@ -1,11 +1,7 @@
-import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
-import { Provider } from "../entity/provider";
 import { ProviderCard } from "./provider-card";
+import { Provider } from "../entity/provider";
 
-const ProviderList = async () => {
-  const providers = (await fetch(`${DYNAMIC_PAGE_API_URL}/api/providers`).then(
-    (res) => res.json(),
-  )) as Provider[] | null;
+const ProviderList = ({ providers }: { providers: Provider[] }) => {
 
   if (!providers || providers.length === 0) {
     return (

@@ -109,22 +109,14 @@ const NavButton = ({
   }
 
   return (
-    <Button
-      variant="ghost"
-      size={config.size}
-      className={buttonClasses}
-      asChild
-      title={!config.showLabel ? label : undefined}
-    >
-      <Link href={path}>
-        {buttonContent}
+    <Link href={path} className={buttonClasses} title={!config.showLabel ? label : undefined}>
+      {buttonContent}
 
-        {/* Active indicator for header/mobile variants */}
-        {(variant === "header" || variant === "mobile") && isActive && (
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
-        )}
-      </Link>
-    </Button>
+      {/* Active indicator for header/mobile variants */}
+      {(variant === "header" || variant === "mobile") && isActive && (
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
+      )}
+    </Link>
   );
 };
 

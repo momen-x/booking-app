@@ -5,7 +5,7 @@ import { TUpdateProvider } from "../dto/update-provider";
 const BASE_URL = "/api/providers";
 export const resProvider: IProviderAPI = {
   add: async (dto) => {
-    const res = await api.post(`${BASE_URL}/add`, {
+    const res = await api.post(`${BASE_URL}`, {
       ...dto,
     });
     return res.data;

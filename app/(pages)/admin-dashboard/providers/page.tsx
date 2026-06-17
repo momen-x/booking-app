@@ -1,20 +1,20 @@
 import { getProviders } from "@/app/_modules/providers/utils/get-providers";
-import ProviderList from "@/app/_modules/providers/views/provider-list";
+import ProvidersDisplayingByAdmin from "@/app/_modules/providers/views/providers-displaying-by-admin";
 import { Metadata } from "next";
-
-export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Providers page",
+  title: "Providers",
   description: "Best Booking App",
 };
+
+
 const ProvidersPage = async () => {
   const providers = await getProviders();
   if (!providers || providers.length === 0) {
-    return <div>No providers available.</div>;
+    return <div className="flex min-h-100 items-center justify-center"> </div>;
   }
   return (
     <div>
-      <ProviderList providers={providers} />
+      <ProvidersDisplayingByAdmin providers={providers} />
     </div>
   );
 };
