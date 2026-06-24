@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Best Booking App",
 };
 
-
+export const dynamic = "force-dynamic";
 const ProvidersPage = async () => {
   const providers = await getProviders();
   if (!providers || providers.length === 0) {

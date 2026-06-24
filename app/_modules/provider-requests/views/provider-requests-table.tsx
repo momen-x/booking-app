@@ -2,12 +2,13 @@ import { cookies } from "next/headers";
 import { Card } from "@/components/ui/card";
 import { ProvideRequest } from "../entity/provider-request";
 import ProviderRequestCard from "./request";
+import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
 
 const ProviderRequest = async () => {
   const cookieStore = await cookies();
   const allCookies = cookieStore.toString();
   const token = cookieStore.get("token")?.value;
-  const response = await fetch("http://localhost:5000/api/provider-request", {
+  const response = await fetch(`${DYNAMIC_PAGE_API_URL}/api/provider-request`, {
     headers: {
       Cookie: allCookies,
       ...(token && { Authorization: `Bearer ${token}` }),
