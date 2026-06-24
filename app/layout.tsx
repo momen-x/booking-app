@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import ReactQueryProviders from "@/Providers/react-query-provider";
 import ToasterProvider from "@/Providers/toast-provider";
 import Headers from "./_components/headers";
+import BecomeProviderBtn from "./_components/become-provider-btn";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -54,6 +55,7 @@ export default function RootLayout({
             <Headers />
             {/* <Headers /> */}
             {children}
+            <BecomeProviderBtn />
           </ThemeProvider>
         </ReactQueryProviders>
       </body>

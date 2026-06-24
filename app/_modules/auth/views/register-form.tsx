@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { useRegister } from "../hooks/useRegister";
 import { toast } from "react-toastify";
 import getErrorMessage from "@/utils/getAxiosErrorMessage";
+import Link from "next/link";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -64,7 +65,9 @@ export function RegisterForm() {
           Enter your details below to create an account for your booking needs
         </CardDescription>
         <CardAction>
-          <Button variant="link">Sign in</Button>
+          <Link href={"/login"}>
+            <Button variant="link">Sign in</Button>
+          </Link>
         </CardAction>
       </CardHeader>
       <Form {...form}>

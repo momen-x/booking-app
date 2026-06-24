@@ -19,6 +19,7 @@ import { useLogin } from "../hooks/useLogin";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import getErrorMessage from "@/utils/getAxiosErrorMessage";
+import Link from "next/link";
 
 export function LoginForm() {
   const router = useRouter();
@@ -56,7 +57,9 @@ export function LoginForm() {
           Enter your email below to login to your account
         </CardDescription>
         <CardAction>
-          <Button variant="link">Sign Up</Button>
+          <Link href={"/register"}>
+            <Button variant="link">Sign Up</Button>
+          </Link>
         </CardAction>
       </CardHeader>
       <Form {...form}>
