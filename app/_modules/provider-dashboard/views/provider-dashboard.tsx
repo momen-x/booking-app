@@ -27,7 +27,7 @@ const ProviderDashboardView = () => {
           {ProviderNavs.map((item) => {
             const Icon = item.icon;
             return (
-              <Link key={item.path} href={`/admin-dashboard/${item.path}`}>
+              <Link key={item.path} href={`/provider-dashboard/${item.path}`}>
                 <div className="group   rounded-xl border p-6 shadow-sm hover:shadow-md transition-all duration-200 hover:border-primary/50 hover:-translate-y-0.5">
                   <div className="flex items-center gap-4">
                     <div className="p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-200">
