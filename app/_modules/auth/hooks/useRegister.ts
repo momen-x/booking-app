@@ -3,9 +3,9 @@ import {
   UseMutationResult,
   useQueryClient,
 } from "@tanstack/react-query";
-import { RegisterDataAPI } from '../_dto/register-validation';
+import { RegisterDataAPI } from "../_dto/register-validation";
 import { resAuth } from "../repo/resAuth";
-import { CURRENT_USER_QUERY_KEY } from "@/utils/constance";
+import { CURRENT_USER_QUERY_KEY, NOTIFICATIONS_KEY } from "@/utils/constance";
 
 export const useRegister = (): UseMutationResult<
   { success: boolean },
@@ -16,12 +16,12 @@ export const useRegister = (): UseMutationResult<
   return useMutation({
     mutationFn: resAuth.register,
     onSuccess: () => {
-      console.log("success");
-      queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY] });
+      queryClient.invalidateQueries({
+        queryKey: [CURRENT_USER_QUERY_KEY, NOTIFICATIONS_KEY],
+      });
     },
     onError: (error) => {
       console.error("Error response:", error);
     },
   });
 };
-

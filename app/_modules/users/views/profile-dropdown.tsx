@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import LogoutBtn from "../../auth/views/logout-btn";
 import { useGetCurrentUser } from "../hooks/useGetCurrentUser";
+import default_user_image from "@/public/assets/default-user1.png";
 
-export function DropdownMenuAvatar() {
+export function ProfileDropdown() {
   const { data: user, isLoading } = useGetCurrentUser();
 
   const getInitials = () => {
@@ -29,14 +30,14 @@ export function DropdownMenuAvatar() {
     );
   }
   if (!isLoading && !user) {
-    return <div>some thing went wrong</div>;
+    return;
   }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-2 rounded-full px-3 hover:bg-muted/50">
         <Avatar className="h-8 w-8">
           <AvatarImage
-            src={user?.userImage || "https://github.com/shadcn.png"}
+            src={user?.userImage || default_user_image.src}
             alt={user?.username || "avatar"}
           />
           <AvatarFallback className="bg-primary/10 text-primary">
@@ -57,7 +58,7 @@ export function DropdownMenuAvatar() {
         <div className="flex items-center gap-3 p-2">
           <Avatar className="h-10 w-10">
             <AvatarImage
-              src={user?.userImage || "https://github.com/shadcn.png"}
+              src={user?.userImage || default_user_image.src}
               alt={user?.username || "avatar"}
             />
             <AvatarFallback className="bg-primary/10 text-primary">

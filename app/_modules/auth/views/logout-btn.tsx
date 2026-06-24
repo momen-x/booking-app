@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { Button } from "@base-ui/react/button";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useLogout } from "../hooks/useLogout";
 import getErrorMessage from "@/utils/getAxiosErrorMessage";
+import { Button } from "@/components/ui/button";
 
 const LogoutBtn = () => {
   const router = useRouter();
@@ -30,8 +30,9 @@ const LogoutBtn = () => {
 
   return (
     <Button
+      variant={"destructive"}
       onClick={handleLogoutClick}
-      className="hover:bg-muted bg-red-500 h-9 flex items-center gap-2 hover:text-black text-black dark:text-white dark:bg-muted p-3 rounded-xl"
+      className="hover:bg-muted  h-9 flex items-center gap-2 hover:text-black p-3 rounded-xl"
     >
       Logout
     </Button>

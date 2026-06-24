@@ -16,7 +16,6 @@ export const useLogin = (): UseMutationResult<
   return useMutation({
     mutationFn: resAuth.login,
     onSuccess: () => {
-      console.log("success");
       queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY] });
     },
     onError: (error) => {

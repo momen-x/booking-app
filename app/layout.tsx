@@ -43,19 +43,19 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider
+        <ReactQueryProviders>
+          <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
-          <ReactQueryProviders>
-            <Headers />
             <ToasterProvider />
+            <Headers />
             {/* <Headers /> */}
             {children}
-          </ReactQueryProviders>
-        </ThemeProvider>
+          </ThemeProvider>
+        </ReactQueryProviders>
       </body>
     </html>
   );

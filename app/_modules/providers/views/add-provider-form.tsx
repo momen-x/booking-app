@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
@@ -15,16 +14,19 @@ import ValidationInput from "@/components/ui/inputs/ValidationInput";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
 
-const AddProviderForm = () => {
-  const params = useSearchParams();
-  const userId = params.get("userId") ?? "";
-  const businessName = params.get("businessName") ?? "";
-  const location = params.get("location") ?? "";
+interface IProps {
+  userId: string;
+  businessName: string;
+  location?: string;
+  description?: string;
+}
 
+const AddProviderForm = ({ userId, businessName, location = "" }: IProps) => {
   const router = useRouter();
   const { mutate: handleCreateProvider, isPending } = useAddProvider();
 
@@ -34,7 +36,7 @@ const AddProviderForm = () => {
     defaultValues: {
       userId,
       businessName,
-      description: "", // optional — always starts empty
+      description: "",
       location,
     },
   });
@@ -58,9 +60,12 @@ const AddProviderForm = () => {
   };
 
   return (
-    <Card>
+    <Card className="ring-0! shadow-none!">
+      <CardHeader className="text-center">Add Provider</CardHeader>
+      <CardDescription className="text-center">
+        Filled the form to add a new provider.
+      </CardDescription>
       <Form {...form}>
-        <CardHeader>Add Provider</CardHeader>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
           className="space-y-4"
@@ -72,7 +77,6 @@ const AddProviderForm = () => {
                 <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                   <span className="text-muted-foreground">{icon}</span>
                   {title}
-                  {/* ✅ FIX 2: show optional label so admin knows it's not required */}
                   {!required && (
                     <span className="ml-auto text-xs text-muted-foreground font-normal">
                       Optional
@@ -96,6 +100,7 @@ const AddProviderForm = () => {
             variant="outline"
             className="flex-1 h-10 rounded-xl"
             onClick={() => router.back()}
+            disabled={isPending}
           >
             Cancel
           </Button>
@@ -106,7 +111,7 @@ const AddProviderForm = () => {
             form="add-provider-form"
           >
             {isPending ? (
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              <div className="h-4 w-4 animate-spin rounded-full border-2  border-t-transparent" />
             ) : (
               "Add Provider"
             )}

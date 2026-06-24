@@ -12,7 +12,6 @@ export const useLogout = (): UseMutationResult<{ success: boolean }, Error> => {
   return useMutation({
     mutationFn: resAuth.logout,
     onSuccess: () => {
-      console.log("success");
       queryClient.setQueryData([CURRENT_USER_QUERY_KEY], null);
     },
     onError: (error) => {

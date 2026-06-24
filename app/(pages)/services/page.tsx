@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 };
 const ServicesPage = async () => {
   const services = await getAllServices();
-  console.log("the services are : ", services);
   if (!services || services.length === 0) {
     return <div>No services available.</div>;
   }

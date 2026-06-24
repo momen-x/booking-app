@@ -69,7 +69,7 @@ const BookingServiceCard = ({ service }: { service: Service }) => {
                 <div>
                   <h1 className="text-xl font-bold">{name}</h1>
                   <p className="text-sm text-muted-foreground mt-0.5">
-                    by Professional Salon
+                    by {service.provider.businessName}
                   </p>
                 </div>
                 <div className="text-right bg-primary/10 rounded-xl px-3 py-1.5">
@@ -79,7 +79,9 @@ const BookingServiceCard = ({ service }: { service: Service }) => {
                       {price}
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground">per person</p>
+                  <p className="text-xs text-muted-foreground">
+                    {service.provider.description}
+                  </p>
                 </div>
               </div>
 
@@ -95,7 +97,7 @@ const BookingServiceCard = ({ service }: { service: Service }) => {
                 </span>
                 <span className="flex items-center gap-1">
                   <MapPin className="h-4 w-4" />
-                  Gaza Strip
+                  {service.provider.location ?? "no address providers"}
                 </span>
               </div>
 
@@ -114,7 +116,7 @@ const BookingServiceCard = ({ service }: { service: Service }) => {
                 <p className="text-xs text-muted-foreground">Total</p>
                 <p className="text-xl font-bold">${price}</p>
               </div>
-              <Link href={`/services/${id}/book`}>
+              <Link href={`/booking/${id}`}>
                 <Button className="flex-1 h-11 cursor-pointer">
                   Book Now →
                 </Button>

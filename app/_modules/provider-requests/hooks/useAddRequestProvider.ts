@@ -1,22 +1,22 @@
 import {
   useMutation,
   UseMutationResult,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { TProviderRequest } from "../dto/provider-request";
-import resProvider from "../repo/resProvider";
+import { resProviderRequest } from "../repo/resProviderRequest";
+import { NOTIFICATIONS_KEY } from "@/utils/constance";
 
 export const useAddRequestProvider = (): UseMutationResult<
   { success: boolean },
   Error,
   TProviderRequest
 > => {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: resProvider.requestProvider,
+    mutationFn: resProviderRequest.requestProvider,
     onSuccess: () => {
-      console.log("success");
-    },
-    onError: () => {
-      console.error("error");
+      queryClient.invalidateQueries({ queryKey: [NOTIFICATIONS_KEY] });
     },
   });
 };

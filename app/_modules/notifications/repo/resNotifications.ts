@@ -19,8 +19,8 @@ export const resNotifications: INotificationsAPI = {
     const res = await api.get(BASE_URL);
     return res.data as Notifications[];
   },
-  update: async (dto: TUpdateNotifications, id: string) => {
-    const res = await api.patch(`${BASE_URL}/${id}`, dto);
+  update: async ( ) => {
+    const res = await api.put(`${BASE_URL}/read-all`);
     return res.data as Notifications;
   },
 };

@@ -7,7 +7,7 @@ import { Service } from "../entity/service";
 import { TService } from "../dto/add-service";
 import { resService } from "../repo/resService";
 import { SERVICES_KEY } from "./useGetServices";
-
+import { NOTIFICATIONS_KEY } from "@/utils/constance";
 
 export const useAddService = (): UseMutationResult<
   Service,
@@ -19,7 +19,7 @@ export const useAddService = (): UseMutationResult<
     mutationFn: resService.addService,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [SERVICES_KEY],
+        queryKey: [SERVICES_KEY, NOTIFICATIONS_KEY],
       });
     },
     onError: (err: Error) => {

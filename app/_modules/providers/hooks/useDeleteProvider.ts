@@ -19,8 +19,7 @@ export const useDeleteProvider = (
       }
       return resProvider.delete(id);
     },
-    onSuccess: (data) => {
-      console.log("success", data);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [PROVIDERS_KEY] });
     },
     onError: (error) => {

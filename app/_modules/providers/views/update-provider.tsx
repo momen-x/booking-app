@@ -12,6 +12,7 @@ import getErrorMessage from "@/utils/getAxiosErrorMessage";
 import { ArrowLeft } from "lucide-react";
 import { updateProviderFields } from "./fields-inputs/update-provider-inputs";
 import ValidationInput from "@/components/ui/inputs/ValidationInput";
+import BackBtn from "@/app/_components/back_btn";
 
 const UpdateProviderForm = ({
   businessName,
@@ -21,8 +22,8 @@ const UpdateProviderForm = ({
   redirectPath = "/provider-dashboard",
 }: {
   businessName: string;
-  location: string | null;
-  description: string | null;
+  location?: string | null;
+  description?: string | null;
   isActive: boolean;
   userId?: string;
   redirectPath?: string;
@@ -57,15 +58,7 @@ const UpdateProviderForm = ({
   return (
     <div className="min-h-screen flex items-start justify-center pt-12 px-4">
       <div className="w-full max-w-sm space-y-5">
-        {/* Back */}
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back
-        </button>
+        <BackBtn />
 
         {/* Title */}
         <div>

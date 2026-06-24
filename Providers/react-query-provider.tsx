@@ -9,6 +9,7 @@ export const queryClient = new QueryClient({
       staleTime: 60 * 1000 * 5,
       refetchOnWindowFocus: false,
       retry: false,
+      gcTime: 0, // Don't cache failed queries
     },
   },
 });

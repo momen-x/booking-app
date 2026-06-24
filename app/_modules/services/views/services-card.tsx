@@ -45,7 +45,7 @@ export function ServiceCard({
         <Link href={`/services/${id}`} className="w-full">
           <Button className="w-full">View Service</Button>
         </Link>
-        <Link href={`/services/${id}/booking`} className="w-full">
+        <Link href={`/booking/${id}`} className="w-full">
           <Button className="w-full cursor-pointer">Book Now →</Button>
         </Link>
       </CardFooter>

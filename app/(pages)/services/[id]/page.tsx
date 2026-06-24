@@ -3,6 +3,7 @@ import { IParams } from "../../_types/dynamic-page-params";
 import BackBtn from "@/app/_components/back_btn";
 import { Metadata } from "next";
 import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
+import NotFound from "@/app/not-found";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -19,17 +20,14 @@ const SingleServicePage = async ({ params }: IParams) => {
     );
   }
   const response = await fetch(`${DYNAMIC_PAGE_API_URL}/api/services/${id}`);
-  // console.log("the response is ", await response.json());
   const service = await response.json();
   if (!service) {
     return (
       <div>
-        <BackBtn />
-        Service not found
+        <NotFound />
       </div>
     );
   }
-  console.log("the service is ", service);
 
   return (
     <div>

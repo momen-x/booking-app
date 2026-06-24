@@ -41,7 +41,6 @@ export function RegisterForm() {
       { username, email, password },
       {
         onSuccess: () => {
-          console.log("Registration successful");
           toast.success("Registration successful! Please log in.");
           setTimeout(() => {
             router.push("/login");

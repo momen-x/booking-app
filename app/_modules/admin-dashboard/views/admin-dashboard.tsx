@@ -10,7 +10,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import NavButton from "@/components/ui/nav-button";
-import { dashboardNaves } from "./navs/navs-array";
+import { dashboardNaves } from "../navs/navs-array";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

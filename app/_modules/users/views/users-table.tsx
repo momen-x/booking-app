@@ -109,7 +109,7 @@ const UsersTable = async () => {
 
                   <TableCell>
                     <div className="flex items-center justify-center gap-1">
-                      <Link href={`/admin-dashboard/users/user/${user.id}`}>
+                      <Link href={`/admin-dashboard/users/${user.id}`}>
                         {" "}
                         <Button
                           size="icon"
@@ -120,7 +120,7 @@ const UsersTable = async () => {
                         </Button>
                       </Link>
                       <Link
-                        href={`/admin-dashboard/users/users-update-form?id=${user.id}&username=${user.username}&email=${user.email}`}
+                        href={`/admin-dashboard/users/${user.id}/update?username=${user.username}&email=${user.email}`}
                       >
                         <Button
                           size="icon"

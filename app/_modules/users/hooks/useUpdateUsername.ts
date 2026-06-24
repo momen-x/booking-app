@@ -18,7 +18,6 @@ export const useUpdateUsername = (): UseMutationResult<
   return useMutation({
     mutationFn: resUserAPI.updateUsername,
     onSuccess: () => {
-      console.log("success");
       queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY] });
     },
     onError: () => {

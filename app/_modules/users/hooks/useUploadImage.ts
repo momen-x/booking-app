@@ -17,7 +17,6 @@ export const useUploadImage = (): UseMutationResult<
   return useMutation({
     mutationFn: resUserAPI.uploadImage,
     onSuccess: () => {
-      console.log("success");
       queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY] });
     },
     onError: () => {

@@ -4,7 +4,7 @@ import { Notifications } from "../entity/notifications";
 
 export interface INotificationsAPI {
   add: (userId: string, dto: TNotifications) => Promise<Notifications>;
-  update: (dto: TUpdateNotifications, id: string) => Promise<Notifications>;
+  update: () => Promise<Notifications>;
   get: () => Promise<Notifications[]>;
   delete: (id: string) => Promise<Notifications>;
 }

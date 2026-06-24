@@ -23,11 +23,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { ArrowLeft, CalendarDays, Clock } from "lucide-react";
+import { ArrowLeft, CalendarDays, Clock, Save, Plus } from "lucide-react";
 
 import { useCreateAvailability } from "../hooks/useCreateAvailability";
+import { useUpdateAvailability } from "../hooks/useUpdateAvailability";
 import getErrorMessage from "@/utils/getAxiosErrorMessage";
-import { createAvailabilitySchema, TCreateAvailability } from "../dto/create-available";
+import {
+  createAvailabilitySchema,
+  TCreateAvailability,
+} from "../dto/create-available";
 
 const DAYS = [
   { value: "0", label: "Sunday" },
@@ -39,33 +43,75 @@ const DAYS = [
   { value: "6", label: "Saturday" },
 ];
 
-const AddAvailabilityTime = () => {
+interface AddAvailabilityTimeProps {
+  mode: "add" | "update";
+  availabilityId?: string;
+  defaultValues?: {
+    dayOfWeek: number;
+    startTime: string;
+    endTime: string;
+  };
+}
+
+const AddAvailabilityTime = ({
+  mode = "add",
+  availabilityId,
+  defaultValues,
+}: AddAvailabilityTimeProps) => {
   const router = useRouter();
-  const { mutate: createAvailability, isPending } = useCreateAvailability();
+  const { mutate: createAvailability, isPending: isCreating } =
+    useCreateAvailability();
+  const { mutate: updateAvailability, isPending: isUpdating } =
+    useUpdateAvailability();
+
+  const isPending = isCreating || isUpdating;
 
   const form = useForm<TCreateAvailability>({
     resolver: zodResolver(createAvailabilitySchema as any),
     mode: "onChange",
     defaultValues: {
-      dayOfWeek: undefined,
-      startTime: "",
-      endTime: "",
+      dayOfWeek: defaultValues?.dayOfWeek ?? undefined,
+      startTime: defaultValues?.startTime ?? "",
+      endTime: defaultValues?.endTime ?? "",
     },
   });
 
   const handleSubmit = (data: TCreateAvailability) => {
-    createAvailability(data, {
-      onSuccess: () => {
-        toast.success("Availability added successfully!");
-        form.reset();
-      },
-      onError: (error) => {
-        toast.error(getErrorMessage(error) || "Failed to add availability");
-      },
-    });
+    if (mode === "add") {
+      createAvailability(data, {
+        onSuccess: () => {
+          toast.success("Availability added successfully!");
+          form.reset();
+        },
+        onError: (error) => {
+          toast.error(getErrorMessage(error) || "Failed to add availability");
+        },
+      });
+    } else {
+      // Update mode
+      if (!availabilityId) {
+        toast.error("Availability ID is required for update");
+        return;
+      }
+      updateAvailability(
+        { id: availabilityId, dto: data },
+        {
+          onSuccess: () => {
+            toast.success("Availability updated successfully!");
+            router.back();
+          },
+          onError: (error) => {
+            toast.error(
+              getErrorMessage(error) || "Failed to update availability",
+            );
+          },
+        },
+      );
+    }
   };
 
   const startTime = form.watch("startTime");
+  const currentDayOfWeek = form.watch("dayOfWeek");
 
   return (
     <div className="min-h-screen flex items-start justify-center pt-12 px-4">
@@ -83,10 +129,12 @@ const AddAvailabilityTime = () => {
         {/* Title */}
         <div>
           <h1 className="text-xl font-semibold text-foreground">
-            Add Availability
+            {mode === "add" ? "Add Availability" : "Update Availability"}
           </h1>
           <p className="text-sm text-muted-foreground mt-0.5">
-            Set the day and hours you are available for bookings
+            {mode === "add"
+              ? "Set the day and hours you are available for bookings"
+              : "Update the day and hours for this availability slot"}
           </p>
         </div>
 
@@ -165,7 +213,6 @@ const AddAvailabilityTime = () => {
                         <Input
                           type="time"
                           className="h-10 rounded-xl"
-                          // prevent selecting end time before start
                           min={startTime || undefined}
                           {...field}
                         />
@@ -177,8 +224,8 @@ const AddAvailabilityTime = () => {
               </div>
 
               {/* Preview */}
-              {form.watch("dayOfWeek") !== undefined &&
-                form.watch("startTime") &&
+              {currentDayOfWeek !== undefined &&
+                startTime &&
                 form.watch("endTime") &&
                 !form.formState.errors.endTime && (
                   <div className="rounded-xl bg-muted/50 border border-border/40 px-4 py-3 text-sm text-muted-foreground">
@@ -186,14 +233,13 @@ const AddAvailabilityTime = () => {
                     <span className="font-medium text-foreground">
                       {
                         DAYS.find(
-                          (d) =>
-                            d.value === form.watch("dayOfWeek")?.toString(),
+                          (d) => d.value === currentDayOfWeek?.toString(),
                         )?.label
                       }
                     </span>{" "}
                     from{" "}
                     <span className="font-medium text-foreground">
-                      {form.watch("startTime")}
+                      {startTime}
                     </span>{" "}
                     to{" "}
                     <span className="font-medium text-foreground">
@@ -215,12 +261,19 @@ const AddAvailabilityTime = () => {
                 <Button
                   type="submit"
                   disabled={isPending || !form.formState.isValid}
-                  className="flex-1 h-10 rounded-xl"
+                  className="flex-1 h-10 rounded-xl gap-2"
                 >
                   {isPending ? (
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   ) : (
-                    "Add Slot"
+                    <>
+                      {mode === "add" ? (
+                        <Plus className="h-4 w-4" />
+                      ) : (
+                        <Save className="h-4 w-4" />
+                      )}
+                      {mode === "add" ? "Add Slot" : "Update Slot"}
+                    </>
                   )}
                 </Button>
               </div>

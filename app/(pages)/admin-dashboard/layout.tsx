@@ -1,5 +1,6 @@
 import { Metadata } from "next";
-import AdminDashboard from "./_components/admin-dashboard";
+import AdminDashboard from "../../_modules/admin-dashboard/views/admin-dashboard";
+import RoleGuard from "@/app/_modules/guards/RoleGuard";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
@@ -9,9 +10,9 @@ export const metadata: Metadata = {
 const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      {/* <RoleGuard allowedRoles={["ADMIN"]}> */}
-      <AdminDashboard>{children}</AdminDashboard>
-      {/* </RoleGuard> */}
+      <RoleGuard allowedRoles={["ADMIN"]}>
+        <AdminDashboard>{children}</AdminDashboard>
+      </RoleGuard>
     </>
   );
 };

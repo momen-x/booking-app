@@ -1,8 +1,8 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { resNotifications } from "../repo/resNotifications";
 import { Notifications } from "../entity/notifications";
+import { NOTIFICATIONS_KEY } from "@/utils/constance";
 
-export const NOTIFICATIONS_KEY = "notifications";
 
 export const useGetAllNotifications = (): UseQueryResult<
   Notifications[] | null,

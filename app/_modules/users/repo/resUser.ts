@@ -6,6 +6,7 @@ import {
 } from "../dto/update-userprofile";
 import IUserAPI from "./user";
 import { User } from "../entity/user";
+import { TUpdateUserPassword } from "../dto/admin/update-user-password";
 
 const BASE_URL = "/api/users";
 
@@ -32,6 +33,19 @@ const resUserAPI: IUserAPI = {
   getCurrentUser: async () => {
     const user = await api.get(`${BASE_URL}/current-user`);
     return user.data;
+  },
+  deleteUser: async (userId: string) => {
+    await api.delete(`${BASE_URL}/${userId}`);
+  },
+   updatePasswordByAdmin: async (dto: TUpdateUserPassword) => {
+    const updateUser = await api.put(`${BASE_URL}/admin/password`, dto);
+    return updateUser.data as User;
+  },
+  updateUsernameByAdmin: async (id: string, username: string) => {
+    const updateUser = await api.put(`${BASE_URL}/${id}/username`, {
+      username,
+    });
+    return updateUser.data as User;
   },
 };
 

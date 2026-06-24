@@ -1,48 +1,40 @@
-import { Metadata } from "next";
-import Link from "next/link";
+"use client";
+import Lottie from "lottie-react";
+import notFound from "@/public/assets/lottiefiles/not-found.json";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
-export const dynamic = "force-dynamic";
+const NotFound404Page = () => {
+  const router = useRouter();
 
-export const metadata: Metadata = {
-  title: "Booking",
-  description: "Best Booking App",
-};
-export default function NotFound() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-slate-950 px-6 transition-colors duration-300">
-      <div className="text-center relative z-10">
-        {/* Large 404 with gradient text for a modern feel */}
-        <h1 className="text-9xl font-black text-gray-500  dark:text-gray-100 animate-pulse">
-          404
-        </h1>
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <div className="text-center max-w-sm w-full">
+        {/* Animation */}
+        <div className="w-64 h-64 mx-auto">
+          <Lottie animationData={notFound} loop={true} />
+        </div>
 
-        <div className="-mt-10">
-          {" "}
-          {/* Pull text up slightly to overlap the 404 */}
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-            Page not found
-          </h2>
-          <p className="mt-6 text-base leading-7 text-gray-600 dark:text-slate-400">
-            Sorry, Mo&apos;men. The page you are looking for doesn&apos;t exist
-            or has been moved.
+        {/* Text */}
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold">Page Not Found</h1>
+          <p className="text-sm text-muted-foreground">
+            We could&apos;t find this page.
           </p>
         </div>
 
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            href="/"
-            className="w-full sm:w-auto rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-blue-500 hover:scale-105 transition-all active:scale-95"
-          >
-            Back to Home
-          </Link>
+        {/* Actions */}
+        <div className="mt-6 flex gap-3 justify-center">
+          <Button variant="outline" onClick={() => router.back()} size="sm">
+            Go Back
+          </Button>
+          <Button onClick={() => router.push("/")} size="sm">
+            Home
+          </Button>
         </div>
-      </div>
-
-      {/* Modern Background Glows - Adjusted for Dark Mode */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-0 right-0 w-75 h-75 bg-purple-500/10 dark:bg-purple-500/10 rounded-full blur-[100px]"></div>
       </div>
     </div>
   );
-}
+};
+
+export default NotFound404Page;

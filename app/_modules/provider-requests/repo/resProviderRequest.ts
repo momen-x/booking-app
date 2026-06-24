@@ -2,7 +2,9 @@ import api from "@/utils/axiosInstance";
 import { IProviderAPI } from "./provider-request";
 import { TProviderRequest } from "../dto/provider-request";
 
-const resProvider: IProviderAPI = {
+const BASE_URL = "/api/provider-request";
+
+export const resProviderRequest: IProviderAPI = {
   requestProvider: async (data: TProviderRequest) => {
     const formData = new FormData();
 
@@ -30,9 +32,12 @@ const resProvider: IProviderAPI = {
         formData.append("Portfolio", file);
       });
     }
-    const res = await api.post(`/api/provider-request`, formData);
+    const res = await api.post(`${BASE_URL}`, formData);
+    return res.data;
+  },
+  delete: async (id: string) => {
+    const res = await api.delete(`${BASE_URL}/${id}`);
     return res.data;
   },
 };
 
-export default resProvider;

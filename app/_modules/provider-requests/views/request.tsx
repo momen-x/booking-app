@@ -152,7 +152,6 @@ const ProviderRequestCard = (props: ProvideRequest) => {
     createdAt,
     updatedAt,
   } = props;
-
   const [showFullPortfolio, setShowFullPortfolio] = useState(false);
   const [lightbox, setLightbox] = useState<{
     images: string[];

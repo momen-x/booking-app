@@ -23,7 +23,13 @@ import getErrorMessage from "@/utils/getAxiosErrorMessage";
 
 const notificationsType = ["PROVIDER_REQUEST", "BOOKING", "PAYMENT", "SYSTEM"];
 
-const AddNotificationForm = ({ userId }: { userId: string }) => {
+const AddNotificationForm = ({
+  userId,
+  handleFun,
+}: {
+  userId: string;
+  handleFun?: () => void;
+}) => {
   const form = useForm<TNotifications>({
     resolver: zodResolver(notificationsSchema as any),
     defaultValues: {
@@ -35,13 +41,15 @@ const AddNotificationForm = ({ userId }: { userId: string }) => {
   });
   const { mutate: handleAddNotification, isPending } = useAddNotifications();
   const handleSubmit = (data: TNotifications) => {
-    console.log("the data is : ", data);
     handleAddNotification(
       { userId, dto: data },
       {
         onSuccess: () => {
           toast.success("Notification added successfully");
           form.reset();
+          if (handleFun) {
+            handleFun();
+          }
         },
         onError: (error) => {
           const errorMessage = getErrorMessage(error);

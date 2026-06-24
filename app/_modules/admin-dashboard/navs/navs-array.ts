@@ -1,10 +1,10 @@
 import {
-  Form,
   GitPullRequestCreate,
   LayoutDashboardIcon,
   MessageSquarePlus,
   Table2,
   User,
+  UserRoundKey,
 } from "lucide-react";
 
 export const dashboardNaves = [
@@ -20,15 +20,16 @@ export const dashboardNaves = [
     path: "providers/add",
   },
   { icon: User, label: "Users table", path: "/users" },
-  {
-    icon: Form,
-    label: "update provider info",
-    path: "/users/users-update-form",
-  },
+
   { icon: Table2, label: "Providers table", path: "/providers" },
   {
     icon: Table2,
     label: "Services table",
     path: "/services",
+  },
+  {
+    icon: UserRoundKey,
+    label: "Update user password",
+    path: "/users/user/update-password",
   },
 ];

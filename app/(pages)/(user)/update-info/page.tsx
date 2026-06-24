@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const UpdateUserInfoPage = () => {
-  return (
-    <div>UpdateUserInfoPage</div>
-  )
-}
+const UPage = () => {
+  return <div>UPage</div>;
+};
 
-export default UpdateUserInfoPage
+export default UPage;

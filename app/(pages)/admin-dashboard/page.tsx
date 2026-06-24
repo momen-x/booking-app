@@ -1,11 +1,11 @@
-import { Metadata } from "next";
+import AdminDashboardView from "@/app/_modules/admin-dashboard/views/admin-dashboard-view";
 
-export const metaData: Metadata = {
-  title: "Admin Dashboard",
-  description: "Best Booking App",
-};
-const AdminDashboardPage = () => {
-  return <div>page</div>;
+const AdminDashboardPage = async () => {
+  return (
+    <>
+      <AdminDashboardView />
+    </>
+  );
 };
 
 export default AdminDashboardPage;

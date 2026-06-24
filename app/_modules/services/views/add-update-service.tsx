@@ -23,6 +23,7 @@ import { useAddService } from "../hooks/useAddService";
 import { useUpdateService } from "../hooks/useUpdateService";
 import getErrorMessage from "@/utils/getAxiosErrorMessage";
 import ValidationInput from "@/components/ui/inputs/ValidationInput";
+import BackBtn from "@/app/_components/back_btn";
 
 type AddMode = {
   goal: "add";
@@ -38,7 +39,7 @@ type UpdateMode = {
 
 export type TServiceProps = (AddMode | UpdateMode) & {
   description?: string;
-//   providerId: string;
+  //   providerId: string;
 };
 
 const ServiceForm = ({ goal, id, service, description }: TServiceProps) => {
@@ -142,6 +143,7 @@ const ServiceForm = ({ goal, id, service, description }: TServiceProps) => {
 
   return (
     <Card className="w-full max-w-lg border border-border/40">
+      <BackBtn />
       <CardHeader className="pb-4">
         <CardTitle className="text-xl font-semibold">
           {isUpdate ? "Update Service" : "Add New Service"}

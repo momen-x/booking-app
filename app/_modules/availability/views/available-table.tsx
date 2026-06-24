@@ -146,7 +146,7 @@ const AvailableTable = async () => {
                     <TableCell className="py-4">
                       <div className="flex items-center justify-center gap-1">
                         <Link
-                          href={`/admin-dashboard/users/users-update-form?id=${firstSlot.id}`}
+                          href={`/provider-dashboard//availability/${firstSlot.id}/update`}
                         >
                           <Button
                             size="icon"

@@ -13,7 +13,6 @@ export const useDeleteUserImage = (): UseMutationResult<User, Error> => {
   return useMutation({
     mutationFn: resUserAPI.deleteUserImage,
     onSuccess: () => {
-      console.log("success");
       queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY] });
     },
     onError: () => {

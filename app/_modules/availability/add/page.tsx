@@ -26,11 +26,11 @@ import { toast } from "react-toastify";
 import { ArrowLeft, CalendarDays, Clock } from "lucide-react";
 
 import { useCreateAvailability } from "../hooks/useCreateAvailability";
-import getErrorMessage from "@/app/(Modules)/utils/getErrorMessage";
 import {
   createAvailabilitySchema,
   TCreateAvailability,
 } from "../dto/create-available";
+import getErrorMessage from "@/utils/getAxiosErrorMessage";
 
 const DAYS = [
   { value: "0", label: "Sunday" },

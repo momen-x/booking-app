@@ -2,7 +2,7 @@ import AddAvailabilityTime from "@/app/_modules/availability/views/add-availabil
 import React from "react";
 
 const AddAvailabilityPage = () => {
-  return <div><AddAvailabilityTime/></div>;
+  return <div><AddAvailabilityTime mode="add"/></div>;
 };
 
 export default AddAvailabilityPage;
