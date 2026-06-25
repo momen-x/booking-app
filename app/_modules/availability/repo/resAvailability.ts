@@ -40,4 +40,8 @@ export const resAvailability: IAavailabilityAPI = {
     if (!response.ok) throw await response.json();
     return response.json();
   },
+  getAll: async () => {
+    const res = await api.get(BASE_URL);
+    return res.data;
+  },
 };

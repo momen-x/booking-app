@@ -39,5 +39,8 @@ export const resProviderRequest: IProviderAPI = {
     const res = await api.delete(`${BASE_URL}/${id}`);
     return res.data;
   },
+  getAll: async () => {
+    const res = await api.get(`${BASE_URL}`);
+    return res.data;
+  },
 };
-

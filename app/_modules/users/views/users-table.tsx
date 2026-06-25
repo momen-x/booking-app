@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -17,14 +18,20 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import transformingTheDateToATextString from "@/utils/transformingTheDateToATextString";
-import { getAllUser } from "../utils/getUser";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { defaultImage } from "@/utils/constance";
+import { useGetUsers } from "../hooks/useGetAllUsers";
+import Loading from "@/app/loading";
 
-const UsersTable = async () => {
-  const users = await getAllUser();
+const UsersTable = () => {
+  const { data: users, isLoading } = useGetUsers();
+  if (isLoading) return <Loading />;
   if (!users) {
-    return <div>No users found</div>;
+    return (
+      <div className="text-center text-2xl font-bold text-muted-foreground">
+        No users found
+      </div>
+    );
   }
 
   return (

@@ -8,7 +8,7 @@ import { TCreateBooking } from "../dto/add-booking";
 import { resBooking } from "../repo/resBooking";
 import { NOTIFICATIONS_KEY } from "@/utils/constance";
 
-export const BOOKING_KEY = "booking";
+export const BOOKING_KEY = "bookings";
 
 export const useAddBooking = (): UseMutationResult<
   Booking,

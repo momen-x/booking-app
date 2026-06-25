@@ -6,6 +6,7 @@ import {
 import resUserAPI from "../repo/resUser";
 import { CURRENT_USER_QUERY_KEY } from "@/utils/constance";
 import { User } from "../entity/user";
+import { USERS_KEY } from "./useGetAllUsers";
 
 
 export const useDeleteUserImage = (): UseMutationResult<User, Error> => {
@@ -13,10 +14,10 @@ export const useDeleteUserImage = (): UseMutationResult<User, Error> => {
   return useMutation({
     mutationFn: resUserAPI.deleteUserImage,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY,USERS_KEY] });
     },
     onError: () => {
-      queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY, USERS_KEY] });
     },
   });
 };

@@ -19,11 +19,8 @@ const GuestGuard = ({ children, redirectTo = "/" }: Props) => {
     }
   }, [isLoading, user, router, redirectTo]);
 
-  // if logged in → block page
   if (user) return null;
 
-  // while loading → show children (e.g., login form) but don't redirect
-  // redirect is prevented by the !isLoading check in useEffect
   return <>{children}</>;
 };
 

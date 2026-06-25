@@ -2,7 +2,11 @@ import { IParamsAndSearchParams } from "@/app/(pages)/_types/dynamic-page-params
 import BackBtn from "@/app/_components/back_btn";
 import UpdateUserPasswordForm from "@/app/_modules/users/views/update-user-password-form";
 import UpdateUsernameForm from "@/app/_modules/users/views/update-username-form";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Update User",
+  description: "the best booking app",
+};
 const UpdateUserDataByAdminPage = async ({
   searchParams,
   params,
@@ -21,10 +25,9 @@ const UpdateUserDataByAdminPage = async ({
 
   return (
     <div>
-        <div className="flex justify-center mt-4 mb-4">
-
-      <BackBtn />
-        </div>
+      <div className="flex justify-center mt-4 mb-4">
+        <BackBtn />
+      </div>
 
       <div className="w-[50%] border  p-8 rounded-lg shadow-md  m-auto">
         <UpdateUserPasswordForm email={email ?? ""} />

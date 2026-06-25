@@ -16,6 +16,11 @@ import {
 } from "lucide-react";
 
 import Link from "next/link";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Provider Profile",
+  description: "the best booking app",
+};
 
 export default async function ProviderProfilePage({ params }: IParams) {
   const { id } = await params;

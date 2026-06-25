@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -10,29 +11,23 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { SquarePen, Clock } from "lucide-react";
 import Link from "next/link";
-import { cookies } from "next/headers";
 import getDayOfWeek from "../utils/getDayOfWeek";
 import numberToTime from "../utils/getStartAndEndTime";
 import { Availability } from "../entity/availability";
 import transformingTheDateToATextString from "@/utils/transformingTheDateToATextString";
-import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
 
-const AvailableTable = async () => {
-  const cookieStore = await cookies();
-  const allCookies = cookieStore.toString();
-  const token = cookieStore.get("token")?.value;
-  const response = await fetch(`${DYNAMIC_PAGE_API_URL}/api/availability`, {
-    headers: {
-      Cookie: allCookies,
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
-  });
+import { useGetAvailability } from "../hooks/useGetAvailability";
+import Loading from "@/app/loading";
 
-  if (!response.ok) {
-    return <>something went wrong</>;
-  }
-
-  const availability = (await response.json()) as Availability[];
+const AvailableTable = () => {
+  const { data: availability, isLoading } = useGetAvailability();
+  if (isLoading) return <Loading />;
+  if (!availability)
+    return (
+      <div className="text-center text-2xl font-bold text-muted-foreground">
+        No availabilities found
+      </div>
+    );
 
   // Group availability by day of week
   const groupedByDay = availability.reduce(

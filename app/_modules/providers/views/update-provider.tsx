@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Form } from "@/components/ui/form";
@@ -9,26 +10,34 @@ import { TUpdateProvider, UpdateProviderSchema } from "../dto/update-provider";
 import { useUpdateProvider } from "../hooks/useUpdateProvider";
 import { toast } from "react-toastify";
 import getErrorMessage from "@/utils/getAxiosErrorMessage";
-import { ArrowLeft } from "lucide-react";
 import { updateProviderFields } from "./fields-inputs/update-provider-inputs";
 import ValidationInput from "@/components/ui/inputs/ValidationInput";
 import BackBtn from "@/app/_components/back_btn";
+import { useGetCurrentProvider } from "../hooks/useGetCurrentProvider";
+import Loading from "@/app/loading";
 
 const UpdateProviderForm = ({
-  businessName,
-  location,
-  description,
-  userId,
+  isActive = false,
   redirectPath = "/provider-dashboard",
 }: {
-  businessName: string;
-  location?: string | null;
-  description?: string | null;
-  isActive: boolean;
-  userId?: string;
   redirectPath?: string;
+  isActive?: boolean;
+  userId?: string;
 }) => {
+  const { data: provider, isLoading } = useGetCurrentProvider();
   const router = useRouter();
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (!provider) {
+    return (
+      <div className="min-h-screen flex items-start justify-center pt-12 px-4">
+        Provider not found
+      </div>
+    );
+  }
+  const { businessName, location, description, userId } = provider;
+
   const { mutate: handleUpdateProvider, isPending } = useUpdateProvider(
     userId ?? "",
   );

@@ -16,7 +16,9 @@ export const useAddRequestProvider = (): UseMutationResult<
   return useMutation({
     mutationFn: resProviderRequest.requestProvider,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [NOTIFICATIONS_KEY] });
+      queryClient.invalidateQueries({
+        queryKey: [NOTIFICATIONS_KEY, "provider-request"],
+      });
     },
   });
 };

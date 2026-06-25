@@ -1,7 +1,5 @@
-// app/admin-dashboard/availability/update/[id]/page.tsx
 import AddAvailabilityTime from "@/app/_modules/availability/views/add-availability-time";
 import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
-import { cookies } from "next/headers";
 
 interface PageProps {
   params: Promise<{ id: string }> | { id: string };
@@ -10,17 +8,11 @@ interface PageProps {
 const UpdateAvailabilityPage = async ({ params }: PageProps) => {
   const { id } = await params;
 
-  // Fetch the availability data
-  const cookieStore = await cookies();
-  const allCookies = cookieStore.toString();
-  const token = cookieStore.get("token")?.value;
 
-  const response = await fetch(`${DYNAMIC_PAGE_API_URL}/api/availability/${id}`, {
-    headers: {
-      Cookie: allCookies,
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
-  });
+
+  const response = await fetch(
+    `${DYNAMIC_PAGE_API_URL}/api/availability/${id}`,
+  );
 
   if (!response.ok) {
     return <div>Failed to load availability data</div>;

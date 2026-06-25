@@ -10,10 +10,8 @@ import {
 } from "@/components/ui/card";
 import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
 import { MapPin, Calendar, CheckCircle, XCircle } from "lucide-react";
-import { cookies } from "next/headers";
-import ServiceList from "../../services/views/services-list";
-import { Service } from "../../services/entity/service";
 import NotFound from "@/app/not-found";
+import ProviderServicesList from "./provider-services-list";
 
 const SingleProviderCard = async ({ id }: { id: string }) => {
   if (!id) {
@@ -22,35 +20,18 @@ const SingleProviderCard = async ({ id }: { id: string }) => {
 
   const response = await fetch(`${DYNAMIC_PAGE_API_URL}/api/providers/${id}`);
   if (!response.ok) {
-    return (
-      <div>
-        <NotFound />
-      </div>
-    );
+    return <NotFound />;
   }
 
   const provider = (await response.json()) as Provider;
-  const cookieStore = await cookies();
-  const allCookies = cookieStore.toString();
-  const token = cookieStore.get("token")?.value;
 
-  const providerRes = await fetch(
-    `${DYNAMIC_PAGE_API_URL}/api/services/provider/current-provider`,
-    {
-      headers: {
-        Cookie: allCookies,
-        ...(token && { Authorization: `Bearer ${token}` }),
-      },
-    },
-  );
-  const providerServices = (await providerRes.json()) as Service[];
   return (
-    <>
-      <div className="flex min-h-screen items-center justify-center p-4">
-        <Card className="w-full max-w-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
-          <CardHeader className="text-center">
-            {/* Status Badge */}
-            <div className="mb-2 flex justify-center">
+    <div className="container mx-auto max-w-6xl px-4 py-8">
+      {/* Provider Card */}
+      <Card className="mb-8 overflow-hidden border-0 shadow-lg">
+        <CardHeader className="bg-linear-to-r from-primary/5 to-primary/10 pb-6">
+          <div className="flex items-start justify-between">
+            <div className="space-y-2">
               <Badge
                 variant={provider.isActive ? "default" : "secondary"}
                 className="gap-1"
@@ -62,49 +43,47 @@ const SingleProviderCard = async ({ id }: { id: string }) => {
                 )}
                 {provider.isActive ? "Active" : "Inactive"}
               </Badge>
+              <CardTitle className="text-4xl font-bold">
+                {provider.businessName}
+              </CardTitle>
+              {provider.location && (
+                <CardDescription className="flex items-center gap-1 text-base">
+                  <MapPin className="h-4 w-4" />
+                  {provider.location}
+                </CardDescription>
+              )}
             </div>
+          </div>
+        </CardHeader>
 
-            {/* Business Name */}
-            <CardTitle className="text-3xl">{provider.businessName}</CardTitle>
+        {provider.description && (
+          <CardContent className="pt-6">
+            <p className="text-muted-foreground">{provider.description}</p>
+          </CardContent>
+        )}
 
-            {/* Location */}
-            {provider.location && (
-              <CardDescription className="flex items-center justify-center gap-1 pt-2">
-                <MapPin className="h-4 w-4" />
-                {provider.location}
-              </CardDescription>
-            )}
-          </CardHeader>
+        <CardFooter className="flex items-center justify-between border-t bg-muted/30 py-4 text-sm text-muted-foreground">
+          <span>Since {new Date(provider.createdAt).getFullYear()}</span>
+          <div className="flex items-center gap-1">
+            <Calendar className="h-4 w-4" />
+            <span>
+              Joined {new Date(provider.createdAt).toLocaleDateString()}
+            </span>
+          </div>
+        </CardFooter>
+      </Card>
 
-          {/* Description */}
-          {provider.description && (
-            <CardContent className="text-center">
-              <div className="rounded-lg bg-muted/50 p-4">
-                <p className="text-sm text-muted-foreground">
-                  {provider.description}
-                </p>
-              </div>
-            </CardContent>
-          )}
-
-          {/* Footer with Meta Info */}
-          <CardFooter className="flex flex-col gap-3 pt-2">
-            <div className="flex w-full items-center justify-between text-xs text-muted-foreground">
-              <span>Since {new Date(provider.createdAt).getFullYear()}</span>
-              <div className="flex items-center gap-1">
-                <Calendar className="h-3 w-3" />
-                <span>
-                  Joined {new Date(provider.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-            </div>
-          </CardFooter>
-        </Card>
+      {/* Services Section */}
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-2xl font-semibold">Our Services</h2>
+          <p className="text-sm text-muted-foreground">
+            Check out the services we offer
+          </p>
+        </div>
+        <ProviderServicesList />
       </div>
-      <>
-        <ServiceList services={providerServices} />
-      </>
-    </>
+    </div>
   );
 };
 

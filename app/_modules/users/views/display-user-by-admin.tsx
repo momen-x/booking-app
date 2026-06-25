@@ -1,17 +1,19 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Mail, Calendar, Clock, Pen } from "lucide-react";
 import Link from "next/link";
-import { getSingleUser } from "../utils/getUser";
 import transformingTheDateToATextString from "@/utils/transformingTheDateToATextString";
 import DeleteUserBtn from "./delete-user-btn";
 import { Button } from "@/components/ui/button";
 import BackBtn from "@/app/_components/back_btn";
+import { useGetUserById } from "../hooks/useGetUserById";
 
-export default async function DisplayUserData({ id }: { id: string }) {
-  const user = await getSingleUser(id);
-  if (!user) return <> user not found</>;
+export default function DisplayUserData({ id }: { id: string }) {
+  const { data: user, isLoading } = useGetUserById(id);
+  if (isLoading) return <div>Loading...</div>;
+  if (!user) return <div className=""> user not found</div>;
 
   const getInitials = () => {
     return (
@@ -27,9 +29,8 @@ export default async function DisplayUserData({ id }: { id: string }) {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
-        <BackBtn />
+      <BackBtn />
       <div className="flex gap-4 mt-4 mb-4">
-        
         <Link
           href={`/admin-dashboard/users/${user.id}/update?username=${user.username}&email=${user.email}`}
         >

@@ -6,6 +6,7 @@ import {
 import { resAvailability } from "../repo/resAvailability";
 import { Availability } from "../entity/availability";
 import { TUpdateAvailability } from "../dto/update-availability";
+import { AVAILABILITY_KEY } from "./useGetAvailability";
 
 export const useUpdateAvailability = (): UseMutationResult<
   Availability,
@@ -17,7 +18,7 @@ export const useUpdateAvailability = (): UseMutationResult<
   return useMutation({
     mutationFn: ({ id, dto }) => resAvailability.update(id, dto),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["availability"] });
+      queryClient.invalidateQueries({ queryKey: [AVAILABILITY_KEY] });
     },
   });
 };

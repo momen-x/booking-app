@@ -3,6 +3,11 @@ import { IParams } from "../../_types/dynamic-page-params";
 import { Availability } from "@/app/_modules/availability/entity/availability";
 import BookingServiceCard from "@/app/_modules/booking/view/booking-service-card";
 import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "single Booking",
+  description: "the best booking app",
+};
 
 const BookingServicePage = async ({ params }: IParams) => {
   const { id } = await params;

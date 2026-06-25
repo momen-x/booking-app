@@ -7,6 +7,7 @@ interface IProviderAPI {
   update: (dto: TUpdateProvider, userId?: string) => Promise<Provider>;
   delete: (id: string) => Promise<{ success: boolean }>;
   getAll: () => Promise<Provider[]>;
-  getById: (id: string) => Promise<Provider>;   
+  getById: (id: string) => Promise<Provider>;
+  getCurrentProvider: () => Promise<Provider>;
 }
 export default IProviderAPI;

@@ -7,11 +7,7 @@ import { useDeleteProviderRequest } from "../hooks/useDeleteProviderRequest";
 import { toast } from "react-toastify";
 import getErrorMessage from "@/utils/getAxiosErrorMessage";
 
-// interface PageProps {
-//   searchParams:
-//     | Promise<{ [key: string]: string | string[] | undefined }>
-//     | { [key: string]: string | string[] | undefined };
-// }
+
 
 const ReviewProviderRequest = () => {
   const searchParams = useSearchParams();

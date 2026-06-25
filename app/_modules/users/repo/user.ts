@@ -1,7 +1,10 @@
 import { TUpdateUserPassword } from "../dto/admin/update-user-password";
-import { TUpdatePassword, TUpdateUsername, TUploadUserImage } from "../dto/update-userprofile";
+import {
+  TUpdatePassword,
+  TUpdateUsername,
+  TUploadUserImage,
+} from "../dto/update-userprofile";
 import { User } from "../entity/user";
-
 
 interface IUserAPI {
   uploadImage: (dto: TUploadUserImage) => Promise<User>;
@@ -12,7 +15,8 @@ interface IUserAPI {
   deleteUser: (userId: string) => Promise<void>;
   updatePasswordByAdmin: (dto: TUpdateUserPassword) => Promise<User>;
   updateUsernameByAdmin: (id: string, username: string) => Promise<User>;
-  
+  getAll: () => Promise<User[]>;
+  getById: (id: string) => Promise<User>;
 }
 
 export default IUserAPI;

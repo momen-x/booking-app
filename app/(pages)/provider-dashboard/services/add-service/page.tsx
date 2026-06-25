@@ -1,4 +1,9 @@
 import ServiceForm from "@/app/_modules/services/views/add-update-service";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Add Services",
+  description: "the best booking app",
+};
 export const dynamic = "force-dynamic";
 
 const ProviderAddServicepage = () => {

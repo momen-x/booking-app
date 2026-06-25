@@ -9,7 +9,11 @@ export const metadata: Metadata = {
 const ServicesPage = async () => {
   const services = await getAllServices();
   if (!services) {
-    return <div>No services available.</div>;
+    return (
+      <div className="flex min-h-100 items-center justify-center">
+        No services available.
+      </div>
+    );
   }
   const isLoading = false;
 

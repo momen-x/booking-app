@@ -1,5 +1,9 @@
 import PaymentConfirmCard from "@/app/_modules/payment/views/payment-confirm-card";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Confirm Booking",
+  description: "the best booking app",
+};
 const ConfirmBookingPage = async ({
   params,
 }: {

@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import resUserAPI from "../repo/resUser";
 import { CURRENT_USER_QUERY_KEY } from "@/utils/constance";
+import { USERS_KEY } from "./useGetAllUsers";
 
 export const useDeleteUser = (
   id?: string,
@@ -20,7 +21,7 @@ export const useDeleteUser = (
       return resUserAPI.deleteUser(id);
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY,USERS_KEY] });
     },
     onError: (error) => {
       console.error("Error response:", error);

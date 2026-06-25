@@ -37,7 +37,7 @@ const resUserAPI: IUserAPI = {
   deleteUser: async (userId: string) => {
     await api.delete(`${BASE_URL}/${userId}`);
   },
-   updatePasswordByAdmin: async (dto: TUpdateUserPassword) => {
+  updatePasswordByAdmin: async (dto: TUpdateUserPassword) => {
     const updateUser = await api.put(`${BASE_URL}/admin/password`, dto);
     return updateUser.data as User;
   },
@@ -46,6 +46,14 @@ const resUserAPI: IUserAPI = {
       username,
     });
     return updateUser.data as User;
+  },
+  getAll: async () => {
+    const users = await api.get(`${BASE_URL}`);
+    return users.data as User[];
+  },
+  getById: async (id: string) => {
+    const user = await api.get(`${BASE_URL}/${id}`);
+    return user.data as User;
   },
 };
 

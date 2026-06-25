@@ -2,6 +2,7 @@ import { useMutation, UseMutationResult, useQueryClient } from "@tanstack/react-
 import { resAvailability } from "../repo/resAvailability";
 import { Availability } from "../entity/availability";
 import { TCreateAvailability } from "../dto/create-available";
+import { AVAILABILITY_KEY } from "./useGetAvailability";
 
 export const useCreateAvailability = (): UseMutationResult<
   Availability,
@@ -13,7 +14,7 @@ export const useCreateAvailability = (): UseMutationResult<
   return useMutation({
     mutationFn: resAvailability.AddAvailable,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["availability"] });
+      queryClient.invalidateQueries({ queryKey: [AVAILABILITY_KEY] });
     },
   });
 };

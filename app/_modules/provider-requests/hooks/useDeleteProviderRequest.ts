@@ -4,7 +4,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { resProviderRequest } from "../repo/resProviderRequest";
-// import { PROVIDERS_KEY } from "./useGetAllProviders";
 
 export const useDeleteProviderRequest = (
   id: string,
@@ -20,7 +19,7 @@ export const useDeleteProviderRequest = (
       return resProviderRequest.delete(id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["providers-request"] });
+      queryClient.invalidateQueries({ queryKey: ["provider-request"] });
     },
     onError: (error) => {
       console.error("Error response:", error);

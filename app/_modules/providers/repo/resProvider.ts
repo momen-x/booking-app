@@ -26,4 +26,8 @@ export const resProvider: IProviderAPI = {
     const res = await api.get(`${BASE_URL}/${id}`);
     return res.data;
   },
+  getCurrentProvider: async () => {
+    const res = await api.get(`${BASE_URL}/current-provider`);
+    return res.data;
+  },
 };
