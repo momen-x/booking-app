@@ -22,7 +22,7 @@ const ReviewProviderRequest = () => {
     handleUpdateStatus(
       {
         id,
-        dto: { status: "APPROVED" },
+        dto: { status: "REJECTED" },
       },
       {
         onSuccess: () => {
