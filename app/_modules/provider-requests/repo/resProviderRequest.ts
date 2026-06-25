@@ -45,7 +45,7 @@ export const resProviderRequest: IProviderAPI = {
     return res.data;
   },
   updateStatus: async (id: string, status: TUpdateProviderRequestStatus) => {
-    const res = await api.patch(`${BASE_URL}/${id}`, status);
+    const res = await api.put(`${BASE_URL}/${id}`, status);
     return res.data;
   },
 };

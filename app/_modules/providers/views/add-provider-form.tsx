@@ -18,7 +18,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { useUpdateProviderRequestStatus } from "../../provider-requests/hooks/useUpdateProviderRequesstStatus";
+import { useUpdateProviderRequestStatus } from "../../provider-requests/hooks/useUpdateProviderRequestStatus";
 
 interface IProps {
   userId: string;

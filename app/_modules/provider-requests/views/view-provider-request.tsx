@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import AddNotificationForm from "@/app/_modules/notifications/views/add-notification-form";
 import AddProviderForm from "@/app/_modules/providers/views/add-provider-form";
 import { CheckCircle, XCircle, User, MapPin, Building2 } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useDeleteProviderRequest } from "../hooks/useDeleteProviderRequest";
 import { toast } from "react-toastify";
 import getErrorMessage from "@/utils/getAxiosErrorMessage";
+import { useUpdateProviderRequestStatus } from "../hooks/useUpdateProviderRequestStatus";
 
 const ReviewProviderRequest = () => {
   const searchParams = useSearchParams();
@@ -14,21 +15,27 @@ const ReviewProviderRequest = () => {
   const location = searchParams.get("location") ?? "";
   const params = useParams();
   const id = (params.id as string) ?? "";
-  const { mutate: handleDeleteProviderRequest } = useDeleteProviderRequest(id);
+  const { mutate: handleUpdateStatus } = useUpdateProviderRequestStatus();
   const router = useRouter();
   const handleDelete = () => {
     if (!id || typeof id !== "string") return;
-    handleDeleteProviderRequest(undefined, {
-      onSuccess: () => {
-        toast.success("Provider request deleted successfully");
-        // router.refresh();
-        router.push("/admin-dashboard/providers/requests");
+    handleUpdateStatus(
+      {
+        id,
+        dto: { status: "APPROVED" },
       },
-      onError: (error) => {
-        const errMessage = getErrorMessage(error);
-        toast.error(errMessage ?? "Error deleting provider request");
+      {
+        onSuccess: () => {
+          toast.success("Provider request status updated successfully");
+          router.push("/admin-dashboard/providers/requests");
+        },
+        onError: (error: any) => {
+          toast.error(
+            getErrorMessage(error) || "Error updating provider request status",
+          );
+        },
       },
-    });
+    );
   };
 
   if (!userId || !name || !id) {

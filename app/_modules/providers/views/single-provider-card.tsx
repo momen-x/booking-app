@@ -81,7 +81,7 @@ const SingleProviderCard = async ({ id }: { id: string }) => {
             Check out the services we offer
           </p>
         </div>
-        <ProviderServicesList />
+        <ProviderServicesList providerId={id} />
       </div>
     </div>
   );
