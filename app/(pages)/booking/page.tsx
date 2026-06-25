@@ -13,23 +13,6 @@ const BookingPage = async () => {
   const cookieStore = await cookies();
   const headersList = await headers();
 
-  console.log("HOST:", headersList.get("host"));
-  console.log("COOKIE HEADER:");
-  console.log(headersList.get("cookie"));
-
-  console.log("ACCESS TOKEN:");
-  console.log(cookieStore.get("access_token"));
-  console.log("HOST:", process.env.VERCEL_URL);
-  console.log(
-    cookieStore.getAll().map((cookie) => ({
-      name: cookie.name,
-      value: cookie.value.substring(0, 10),
-    })),
-  );
-  console.log(
-    "cookies:",
-    cookieStore.getAll().map((c) => c.name),
-  );
   const allCookies = cookieStore.toString();
   const token = cookieStore.get("access_token")?.value;
 
@@ -43,8 +26,25 @@ const BookingPage = async () => {
     },
   );
   if (!response.ok) {
-    console.log("the response is :", await response.json());
-    return <>some thing went wrong</>;
+    const error = await response.json();
+
+    return (
+      <div>
+        <h1>Error</h1>
+
+        <pre>
+          {JSON.stringify(
+            {
+              cookies: cookieStore.getAll().map((c) => c.name),
+              accessTokenExists: !!cookieStore.get("access_token"),
+              error,
+            },
+            null,
+            2,
+          )}
+        </pre>
+      </div>
+    );
   }
   const bookings = (await response.json()) as Booking[];
 
