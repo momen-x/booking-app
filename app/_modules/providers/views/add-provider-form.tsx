@@ -18,17 +18,26 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { useUpdateProviderRequestStatus } from "../../provider-requests/hooks/useUpdateProviderRequesstStatus";
 
 interface IProps {
   userId: string;
   businessName: string;
   location?: string;
   description?: string;
+  providerRequestId?: string;
 }
 
-const AddProviderForm = ({ userId, businessName, location = "" }: IProps) => {
+const AddProviderForm = ({
+  providerRequestId,
+  userId,
+  businessName,
+  location = "",
+}: IProps) => {
   const router = useRouter();
   const { mutate: handleCreateProvider, isPending } = useAddProvider();
+  const { mutate: handleUpdateProviderRequestStatus } =
+    useUpdateProviderRequestStatus();
 
   const form = useForm<TCreateProvider>({
     resolver: zodResolver(createProviderSchema as any),
@@ -51,6 +60,25 @@ const AddProviderForm = ({ userId, businessName, location = "" }: IProps) => {
           description: "",
           location: "",
         });
+        if (providerRequestId) {
+          handleUpdateProviderRequestStatus(
+            {
+              id: providerRequestId,
+              dto: { status: "APPROVED" },
+            },
+            {
+              onSuccess: () => {
+                toast.success("Provider request status updated successfully");
+              },
+              onError: (error: any) => {
+                toast.error(
+                  getErrorMessage(error) ||
+                    "Error updating provider request status",
+                );
+              },
+            },
+          );
+        }
         router.push("/admin-dashboard/providers/add");
       },
       onError: (error) => {

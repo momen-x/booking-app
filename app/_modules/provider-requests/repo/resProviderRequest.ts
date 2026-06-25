@@ -1,6 +1,7 @@
 import api from "@/utils/axiosInstance";
 import { IProviderAPI } from "./provider-request";
 import { TProviderRequest } from "../dto/provider-request";
+import { TUpdateProviderRequestStatus } from "../dto/update-provider-request-status";
 
 const BASE_URL = "/api/provider-request";
 
@@ -41,6 +42,10 @@ export const resProviderRequest: IProviderAPI = {
   },
   getAll: async () => {
     const res = await api.get(`${BASE_URL}`);
+    return res.data;
+  },
+  updateStatus: async (id: string, status: TUpdateProviderRequestStatus) => {
+    const res = await api.patch(`${BASE_URL}/${id}`, status);
     return res.data;
   },
 };

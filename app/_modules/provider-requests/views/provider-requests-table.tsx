@@ -7,12 +7,21 @@ import { useGetProviderRequest } from "../hooks/useGetProvidersRequest";
 const ProviderRequest = () => {
   const { data: providerRequests, isLoading } = useGetProviderRequest();
   if (isLoading) return <Loading />;
-  if (!providerRequests || providerRequests.length === 0) {
-    return <div> no provider requests</div>;
+  if (!providerRequests)
+    return (
+      <div className="text-center text-2xl font-bold">no provider requests</div>
+    );
+  const pendingRequests = providerRequests.filter(
+    (provider) => provider.status === "PENDING",
+  );
+
+  if (!pendingRequests.length) {
+    return <div>no provider requests</div>;
   }
+
   return (
     <div>
-      {providerRequests.map((provider) => (
+      {pendingRequests.map((provider) => (
         <div key={provider.id}>
           <Card className="p-5 m-5">
             <ProviderRequestCard {...provider} />

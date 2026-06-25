@@ -7,8 +7,6 @@ import { useDeleteProviderRequest } from "../hooks/useDeleteProviderRequest";
 import { toast } from "react-toastify";
 import getErrorMessage from "@/utils/getAxiosErrorMessage";
 
-
-
 const ReviewProviderRequest = () => {
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId") ?? "";
@@ -32,7 +30,6 @@ const ReviewProviderRequest = () => {
       },
     });
   };
-
 
   if (!userId || !name || !id) {
     return (
@@ -128,6 +125,7 @@ const ReviewProviderRequest = () => {
                 userId={userId}
                 businessName={name}
                 location={location}
+                providerRequestId={id}
               />
             </div>
           </div>
