@@ -1,11 +1,12 @@
 import api from "@/utils/axiosInstance";
 import IProviderAPI from "./provider";
 import { TUpdateProvider } from "../dto/update-provider";
+import { TCreateProvider } from "../dto/add-provider";
 
 const BASE_URL = "/api/providers";
 export const resProvider: IProviderAPI = {
-  add: async (dto) => {
-    const res = await api.post(`${BASE_URL}`, {
+  add: async (dto: TCreateProvider, providerRequestId?: string) => {
+    const res = await api.post(`${BASE_URL}?provider-request=${providerRequestId}`, {
       ...dto,
     });
     return res.data;

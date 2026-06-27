@@ -10,4 +10,5 @@ export interface IProviderAPI {
     id: string,
     status: TUpdateProviderRequestStatus,
   ) => Promise<ProvideRequest>;
+  getCurrentUserRequests: () => Promise<ProvideRequest[]>;
 }

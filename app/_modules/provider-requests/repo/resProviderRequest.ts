@@ -48,4 +48,8 @@ export const resProviderRequest: IProviderAPI = {
     const res = await api.put(`${BASE_URL}/${id}`, status);
     return res.data;
   },
+  getCurrentUserRequests: async () => {
+    const res = await api.get(`${BASE_URL}/current-user`);
+    return res.data;
+  },
 };

@@ -12,11 +12,13 @@ import { NOTIFICATIONS_KEY } from "@/utils/constance";
 export const useAddProvider = (): UseMutationResult<
   Provider,
   Error,
-  TCreateProvider
+  { createProvider: TCreateProvider; providerRequestId?: string }
 > => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: resProvider.add,
+    mutationFn: ({ createProvider, providerRequestId }) => {
+      return resProvider.add(createProvider, providerRequestId);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [PROVIDERS_KEY, NOTIFICATIONS_KEY],

@@ -18,7 +18,6 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { useUpdateProviderRequestStatus } from "../../provider-requests/hooks/useUpdateProviderRequestStatus";
 
 interface IProps {
   userId: string;
@@ -36,8 +35,6 @@ const AddProviderForm = ({
 }: IProps) => {
   const router = useRouter();
   const { mutate: handleCreateProvider, isPending } = useAddProvider();
-  const { mutate: handleUpdateProviderRequestStatus } =
-    useUpdateProviderRequestStatus();
 
   const form = useForm<TCreateProvider>({
     resolver: zodResolver(createProviderSchema as any),
@@ -51,40 +48,25 @@ const AddProviderForm = ({
   });
 
   const handleSubmit = (data: TCreateProvider) => {
-    handleCreateProvider(data, {
-      onSuccess: () => {
-        toast.success("Provider added successfully");
-        form.reset({
-          userId: "",
-          businessName: "",
-          description: "",
-          location: "",
-        });
-        if (providerRequestId) {
-          handleUpdateProviderRequestStatus(
-            {
-              id: providerRequestId,
-              dto: { status: "APPROVED" },
-            },
-            {
-              onSuccess: () => {
-                toast.success("Provider request status updated successfully");
-              },
-              onError: (error: any) => {
-                toast.error(
-                  getErrorMessage(error) ||
-                    "Error updating provider request status",
-                );
-              },
-            },
-          );
-        }
-        router.push("/admin-dashboard/providers/add");
+    handleCreateProvider(
+      { createProvider: data, providerRequestId: providerRequestId ?? "" },
+      {
+        onSuccess: () => {
+          toast.success("Provider added successfully");
+          form.reset({
+            userId: "",
+            businessName: "",
+            description: "",
+            location: "",
+          });
+
+          router.push("/admin-dashboard/providers/add");
+        },
+        onError: (error) => {
+          toast.error(getErrorMessage(error) || "Error adding provider");
+        },
       },
-      onError: (error) => {
-        toast.error(getErrorMessage(error) || "Error adding provider");
-      },
-    });
+    );
   };
 
   return (
