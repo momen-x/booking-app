@@ -60,7 +60,8 @@ const AddProviderForm = ({
             location: "",
           });
 
-          router.push("/admin-dashboard/providers/add");
+          router.push("/admin-dashboard");
+          router.refresh();
         },
         onError: (error) => {
           toast.error(getErrorMessage(error) || "Error adding provider");
