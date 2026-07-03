@@ -21,7 +21,7 @@ export const useDeleteUser = (
       return resUserAPI.deleteUser(id);
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY,USERS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [CURRENT_USER_QUERY_KEY,USERS_KEY,id] });
     },
     onError: (error) => {
       console.error("Error response:", error);

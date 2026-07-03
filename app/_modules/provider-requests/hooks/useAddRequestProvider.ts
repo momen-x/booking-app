@@ -6,6 +6,7 @@ import {
 import { TProviderRequest } from "../dto/provider-request";
 import { resProviderRequest } from "../repo/resProviderRequest";
 import { NOTIFICATIONS_KEY } from "@/utils/constance";
+import { PROVIDER_REQUEST_KEY } from "./useGetProvidersRequest";
 
 export const useAddRequestProvider = (): UseMutationResult<
   { success: boolean },
@@ -17,7 +18,7 @@ export const useAddRequestProvider = (): UseMutationResult<
     mutationFn: resProviderRequest.requestProvider,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [NOTIFICATIONS_KEY, "provider-request"],
+        queryKey: [NOTIFICATIONS_KEY, PROVIDER_REQUEST_KEY],
       });
     },
   });

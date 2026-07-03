@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import resUser from "../repo/resUser";
 import { User } from "../entity/user";
+import { USERS_KEY } from "./useGetAllUsers";
 
 export const useUpdateUserUsername = (
   userId: string,
@@ -14,7 +15,7 @@ export const useUpdateUserUsername = (
     mutationFn: ({ username }) =>
       resUser.updateUsernameByAdmin(userId, username),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: [USERS_KEY] });
     },
     onError: (error) => {
       console.error("Error response:", error);

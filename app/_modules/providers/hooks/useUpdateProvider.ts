@@ -15,7 +15,7 @@ export const useUpdateProvider = (
   return useMutation({
     mutationFn: (dto: TUpdateProvider) => resProvider.update(dto, id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [PROVIDERS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [PROVIDERS_KEY, id] });
     },
     onError: (error) => {
       console.error("Error response:", error);

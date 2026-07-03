@@ -6,6 +6,7 @@ import {
 import { TUpdateUserPassword } from "../dto/admin/update-user-password";
 import resUser from "../repo/resUser";
 import { User } from "../entity/user";
+import { USERS_KEY } from "./useGetAllUsers";
 
 
 export const useUpdateUserPassword = (): UseMutationResult<
@@ -17,7 +18,7 @@ export const useUpdateUserPassword = (): UseMutationResult<
   return useMutation({
     mutationFn: resUser.updatePasswordByAdmin,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: [USERS_KEY] });
     },
     onError: (error) => {
       console.error("Error response:", error);
