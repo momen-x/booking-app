@@ -14,4 +14,5 @@ export interface Booking {
   updatedAt: Date;
   service: Service;
   provider: Provider;
+  images?: string[];
 }
