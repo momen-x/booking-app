@@ -1,3 +1,4 @@
+import { AVAILABLE_TIMES_KEY } from "./useAvailableTimes";
 import {
   useMutation,
   UseMutationResult,
@@ -19,6 +20,7 @@ export const useAddBooking = (): UseMutationResult<
   return useMutation({
     mutationFn: resBooking.create,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [AVAILABLE_TIMES_KEY] });
       queryClient.invalidateQueries({
         queryKey: [BOOKING_KEY, NOTIFICATIONS_KEY],
       });

@@ -1,3 +1,4 @@
+import { AVAILABLE_TIMES_KEY } from "./useAvailableTimes";
 import {
   useMutation,
   UseMutationResult,
@@ -15,6 +16,7 @@ export const useCancelBooking = (
   return useMutation({
     mutationFn: () => resBooking.cancel(id),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [AVAILABLE_TIMES_KEY] });
       queryClient.invalidateQueries({
         queryKey: [BOOKING_KEY, NOTIFICATIONS_KEY],
       });

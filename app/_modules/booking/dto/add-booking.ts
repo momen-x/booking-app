@@ -4,7 +4,7 @@ export const createBookingSchema = z.object({
   providerId: z.string(),
   serviceId: z.string(),
   date: z.string().min(1),
-  startTime: z.number(),
+  startTime: z.union([z.number(), z.iso.datetime({ offset: true })]),
 });
 
 export type TCreateBooking = z.infer<typeof createBookingSchema>;

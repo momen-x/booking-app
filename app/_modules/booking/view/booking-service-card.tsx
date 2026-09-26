@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, DollarSign, MapPin } from "lucide-react";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import transformingTheDateToATextString from "@/utils/transformingTheDateToATextString";
@@ -25,7 +25,8 @@ import { z } from "zod";
 import { Service } from "@/app/_modules/services/entity/service";
 import { Availability } from "@/app/_modules/availability/entity/availability";
 import { useAddBooking } from "../hooks/useAddBooking";
-import numberToTime from "@/app/_modules/availability/utils/getStartAndEndTime";
+import { useAvailableTimes } from "../hooks/useAvailableTimes";
+import { generateTimeSlots } from "../utils/generate-time-slots";
 import getDayOfWeek from "@/app/_modules/availability/utils/getDayOfWeek";
 import BackBtn from "@/app/_components/back_btn";
 import { defaultImage } from "@/utils/constance";
@@ -41,72 +42,14 @@ type BookingFormData = z.infer<typeof bookingFormSchema>;
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
-function formatMinutes(minutes: number): string {
-  return numberToTime(minutes).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
 function todayString(): string {
-  return new Date().toISOString().split("T")[0];
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 }
 
 function dateToDayNumber(dateStr: string): number {
-  return new Date(dateStr).getDay();
+  return new Date(`${dateStr}T12:00:00`).getDay();
 }
-
-// Convert local date + time slot to UTC ISO string
-function createUTCStartTime(date: string, startMinutes: number): string {
-  // Parse the local date components
-  const [year, month, day] = date.split("-").map(Number);
-
-  // Calculate hours and minutes from minutes since midnight
-  const hours = Math.floor(startMinutes / 60);
-  const minutes = startMinutes % 60;
-
-  // Create a local date object (interpreted as local time)
-  const localDate = new Date(year, month - 1, day, hours, minutes);
-
-  // Convert to UTC ISO string
-  return localDate.toISOString();
-}
-
-interface TimeSlot {
-  startMinutes: number;
-  endMinutes: number;
-  label: string;
-  isoStartTime: string;
-}
-
-function generateTimeSlots(
-  availabilities: Availability[],
-  dayNumber: number,
-  duration: number,
-  selectedDate: string,
-): TimeSlot[] {
-  const slots: TimeSlot[] = [];
-  const dayAvail = availabilities.filter((a) => a.dayOfWeek === dayNumber);
-
-  for (const avail of dayAvail) {
-    let current = avail.startTime;
-    while (current + duration <= avail.endTime) {
-      const isoStartTime = createUTCStartTime(selectedDate, current);
-
-      slots.push({
-        startMinutes: current,
-        endMinutes: current + duration,
-        label: `${formatMinutes(current)} – ${formatMinutes(current + duration)}`,
-        isoStartTime: isoStartTime,
-      });
-      current += duration;
-    }
-  }
-
-  return slots;
-}
-
-// ── component ─────────────────────────────────────────────────────────────────
 
 const BookingServiceCard = ({
   id: serviceId,
@@ -118,7 +61,6 @@ const BookingServiceCard = ({
   images,
   businessName,
   location,
-  availability,
 }: Service & {
   businessName: string;
   location: string;
@@ -130,7 +72,6 @@ const BookingServiceCard = ({
   const [mainImage, setMainImage] = useState(
     images?.[0] ? images[0] : defaultImage,
   );
-  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
 
   const {
     control,
@@ -150,21 +91,11 @@ const BookingServiceCard = ({
   const selectedDate = watch("date");
   const selectedStartTime = watch("startTime");
 
-  // Generate time slots when date changes
-  useEffect(() => {
-    if (selectedDate) {
-      const dayNumber = dateToDayNumber(selectedDate);
-      const slots = generateTimeSlots(
-        availability,
-        dayNumber,
-        duration,
-        selectedDate,
-      );
-      setTimeSlots(slots);
-      // Reset selected time when date changes
-      setValue("startTime", "");
-    }
-  }, [selectedDate, availability, duration, setValue]);
+  const { data: availableTimes, isFetching, isError, refetch } = useAvailableTimes(providerId, selectedDate);
+  const timeSlots = availableTimes?.date === selectedDate && !isFetching && !isError
+    ? generateTimeSlots(availableTimes, duration)
+    : [];
+  const validSelection = timeSlots.some((slot) => slot.isoStartTime === selectedStartTime);
 
   const onSubmit = (data: BookingFormData) => {
     // Find the selected slot to get the correct ISO string
@@ -182,7 +113,7 @@ const BookingServiceCard = ({
       providerId: providerId,
       serviceId: serviceId,
       date: data.date, // YYYY-MM-DD format
-      startTime: selectedSlot.startMinutes, // UTC ISO string
+      startTime: selectedSlot.isoStartTime,
     };
 
     createBooking(bookingData, {
@@ -191,7 +122,7 @@ const BookingServiceCard = ({
         router.push("/booking");
       },
       onError: (error) => {
-        console.error("the err is : ", error);
+        void refetch();
         toast.error(getErrorMessage(error) || "Booking failed");
       },
     });
@@ -287,7 +218,10 @@ const BookingServiceCard = ({
                       type="date"
                       min={todayString()}
                       value={field.value}
-                      onChange={(e) => field.onChange(e.target.value)}
+                      onChange={(e) => {
+                        setValue("startTime", "");
+                        field.onChange(e.target.value);
+                      }}
                       className="w-full h-10 rounded-xl border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                     />
                   )}
@@ -308,7 +242,15 @@ const BookingServiceCard = ({
                     </span>
                   </h3>
 
-                  {timeSlots.length === 0 ? (
+                  {availableTimes && <p className="text-xs text-muted-foreground">Times shown in {availableTimes.timezone}</p>}
+                  {isFetching ? (
+                    <p role="status" className="text-sm text-muted-foreground">Loading available times...</p>
+                  ) : isError ? (
+                    <div role="alert" className="text-sm text-destructive">
+                      Could not load available times.
+                      <Button type="button" variant="outline" onClick={() => void refetch()}>Retry</Button>
+                    </div>
+                  ) : timeSlots.length === 0 ? (
                     <p className="text-sm text-muted-foreground py-4 text-center rounded-xl border border-dashed border-border">
                       No availability on this day. Try another date.
                     </p>
@@ -347,12 +289,12 @@ const BookingServiceCard = ({
 
             <CardFooter className="px-0 pt-0 flex flex-col gap-3">
               {/* Booking summary */}
-              {selectedDate && selectedStartTime && (
+              {selectedDate && validSelection && (
                 <div className="w-full rounded-xl bg-muted/50 border border-border/50 px-4 py-3 text-sm text-muted-foreground animate-in fade-in duration-200">
                   📅{" "}
                   <span className="font-medium text-foreground">
                     {getDayOfWeek(dateToDayNumber(selectedDate))},{" "}
-                    {new Date(selectedDate).toLocaleDateString(undefined, {
+                    {new Date(`${selectedDate}T12:00:00`).toLocaleDateString(undefined, {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
@@ -371,7 +313,7 @@ const BookingServiceCard = ({
               <Button
                 type="submit"
                 className="w-full h-11 text-base font-semibold hover:bg-amber-500  hover:border-amber-500"
-                disabled={isPending}
+                disabled={isPending || isFetching || isError || !validSelection}
                 variant={"outline"}
                 size={"sm"}
               >
