@@ -1,6 +1,6 @@
 import { IParams } from "@/app/(pages)/_types/dynamic-page-params";
 import ServiceForm from "@/app/_modules/services/views/add-update-service";
-import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
+import { DYNAMIC_PAGE_API_URL } from "@/utils/server-api";
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Update service",

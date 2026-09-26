@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { getApiUrl } from "./utils/api-url";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -14,11 +15,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-async rewrites() {
+  async rewrites() {
     return [
       {
         source: "/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
+        destination: `${getApiUrl()}/api/:path*`,
       },
     ];
   },

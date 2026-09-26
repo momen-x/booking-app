@@ -2,7 +2,7 @@ import SingleServiceCard from "@/app/_modules/services/views/single-service.card
 import { IParams } from "../../_types/dynamic-page-params";
 import BackBtn from "@/app/_components/back_btn";
 import { Metadata } from "next";
-import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
+import { DYNAMIC_PAGE_API_URL } from "@/utils/server-api";
 import NotFound from "@/app/not-found";
 
 export const dynamic = "force-dynamic";

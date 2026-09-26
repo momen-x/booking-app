@@ -1,10 +1,9 @@
 import { IAavailabilityAPI } from "./availability";
 import { TCreateAvailability, timeToMinutes } from "../dto/create-available";
 import api from "@/utils/axiosInstance";
-import { API_DOMAIN } from "../../../../utils/constance";
 import { TUpdateAvailability } from "../dto/update-availability";
 
-const BASE_URL = `${API_DOMAIN}/api/availability`;
+const BASE_URL = "/api/availability";
 
 export const resAvailability: IAavailabilityAPI = {
   AddAvailable: async (data: TCreateAvailability) => {

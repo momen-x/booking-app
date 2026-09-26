@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
+import { DYNAMIC_PAGE_API_URL } from "@/utils/server-api";
 import { MapPin, Calendar, CheckCircle, XCircle } from "lucide-react";
 import NotFound from "@/app/not-found";
 import ProviderServicesList from "./provider-services-list";

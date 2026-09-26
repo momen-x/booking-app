@@ -172,12 +172,11 @@ Example:
 
 ```ts
 axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });
 ```
 
-This keeps API communication consistent across all feature modules.
+Browser requests use relative `/api/...` paths through Next.js rewrites, preserving same-origin cookie authentication. Server components use the same backend origin directly.
 
 ---
 
@@ -200,9 +199,29 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxx
 Create a `.env.local` file:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5000
+API_URL=http://localhost:5000
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxx
 ```
+
+On Vercel, set `API_URL` to the deployed backend origin (for example,
+`https://booking-wad3.onrender.com` if that is still your backend), without `/api`.
+Set `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` to your Stripe publishable key.
+Apply these to Production and any Preview environments you deploy, then redeploy.
+`NEXT_PUBLIC_API_URL` remains a supported fallback; `API_URL` takes precedence.
+Missing or loopback backend URLs are rejected in production. Development defaults
+to `http://localhost:5000` when neither API variable is configured.
+
+Services and provider listings render dynamically; parameterized backend pages
+already render at request time. The backend need not be available during the build,
+but must be running when users access those pages. A backend redeploy is only
+needed if it is not deployed or its configuration needs updating. Cookie auth
+through the proxy requires cookies without a backend-only Domain attribute;
+production cookies should be Secure and HttpOnly. If the backend validates request
+origins, allow the Vercel frontend origin.
+
+Never set Stripe secrets in frontend environment variables, including the legacy
+misspelled `NEXT_PUBLIC_STRIPE_SECREAT_KEY`. Remove that variable from Vercel if
+present, and rotate the key if it was exposed. Stripe secrets belong on the backend.
 
 ---
 

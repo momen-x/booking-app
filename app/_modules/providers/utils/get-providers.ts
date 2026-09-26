@@ -1,6 +1,6 @@
 "use server";
 
-import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
+import { DYNAMIC_PAGE_API_URL } from "@/utils/server-api";
 import { Provider } from "../entity/provider";
 
 export const getProviders = async (): Promise<Provider[]> => {

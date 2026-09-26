@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import ServicesTable from "@/app/_modules/services/views/services-displaying";
 import { getAllServices } from "@/app/_modules/services/utils/get-services";
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Services",
   description: "Best Booking App",

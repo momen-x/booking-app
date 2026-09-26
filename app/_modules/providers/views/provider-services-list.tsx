@@ -1,5 +1,5 @@
 import ServiceList from "../../services/views/services-list";
-import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
+import { DYNAMIC_PAGE_API_URL } from "@/utils/server-api";
 
 const ProviderServicesList = async ({ providerId }: { providerId: string }) => {
   const response = await fetch(

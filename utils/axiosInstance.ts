@@ -1,16 +1,8 @@
-
-
 import axios from "axios";
 
 const api = axios.create({
+  // Browser requests use Next's same-origin /api rewrite for cookie auth.
   withCredentials: true,
 });
 
-
-api.interceptors.response.use(
-  (response) => response,
-  (error) => Promise.reject(error),
-);
-
 export default api;
-

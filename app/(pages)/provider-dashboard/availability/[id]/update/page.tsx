@@ -1,5 +1,5 @@
 import AddAvailabilityTime from "@/app/_modules/availability/views/add-availability-time";
-import { DYNAMIC_PAGE_API_URL } from "@/utils/constance";
+import { DYNAMIC_PAGE_API_URL } from "@/utils/server-api";
 
 interface PageProps {
   params: Promise<{ id: string }> | { id: string };
