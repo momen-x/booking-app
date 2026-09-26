@@ -124,8 +124,8 @@ const UserBookings = ({ bookings }: UserBookingsProps) => {
                     <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-border/60 bg-muted">
                       <Image
                         src={
-                          booking.images && booking.images.length > 0
-                            ? booking.images[0]
+                          booking.service && booking.service.images.length > 0
+                            ? booking.service.images[0]
                             : defaultImage
                         }
                         alt={booking.service.name || "Service image"}

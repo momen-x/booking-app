@@ -1,5 +1,4 @@
 import { Provider } from "../../providers/entity/provider";
-import { Service } from "../../services/entity/service";
 
 export interface Booking {
   id: string;
@@ -14,5 +13,11 @@ export interface Booking {
   updatedAt: Date;
   service: Service;
   provider: Provider;
-  images?: string[];
+}
+
+interface Service {
+  name: string;
+  price: number;
+  duration: number;
+  images: string[];
 }
