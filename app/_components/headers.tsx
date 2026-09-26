@@ -100,7 +100,14 @@ const Headers = () => {
             <ModeToggleBtn />
 
             {isLoading ? (
-              <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />
+              <div
+                className="hidden md:flex items-center gap-2"
+                aria-label="Checking authentication status"
+                aria-busy="true"
+              >
+                <div className="h-8 w-[4.5rem] animate-pulse rounded-md bg-muted" />
+                <div className="h-8 w-[4.5rem] animate-pulse rounded-md bg-muted" />
+              </div>
             ) : user ? (
               <>
                 <ProfileDropdown />

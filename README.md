@@ -1,195 +1,276 @@
-# 📅 Booking Restructuring
+# Booking & Service Marketplace — Frontend
 
-A premium, modern, multi-role booking management web application built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS 4**, and **TanStack React Query v5**.
+A modern multi-role booking platform built with **Next.js 16**, **React 19**, **TypeScript**, **Tailwind CSS 4**, and **TanStack Query**.
 
-The application is structured around a decoupled, feature-based modular design that organizes authentication, providers, services, availability scheduling, payments, and notifications into highly cohesive, domain-driven modules.
-
----
-
-## 🚀 Key Features & Capabilities
-
-This platform supports a comprehensive service booking lifecycle with distinct user roles:
-
-### 👤 Guest / Public Access
-* **Interactive Landing Page:** Modern hero section, verified feature grids, onboarding workflows, and dynamic call-to-actions.
-* **Role Selection Onboarding:** Clear signup funnels for clients and service providers.
-* **Provider & Service Directories:** Public search, detail views, and reviews.
-
-### 🛍️ Client Portal
-* **Browse Categories:** Explore over 50+ service categories with structured search.
-* **Booking Creation:** Select from available provider time slots and schedule appointments.
-* **Secure Payments:** Integrated checkout flows powered by **Stripe** with instant payment confirmation.
-* **Booking Dashboard:** View, track, and manage all past and upcoming service appointments.
-
-### 💼 Provider Portal
-* **Onboarding & Verification:** Standard registration and profile approval process.
-* **Service Management:** Add, configure, and maintain individual service catalog offerings.
-* **Availability Scheduler:** Configure weekly schedules and specific time slots.
-* **Provider Dashboard:** Track service requests, view statistics, and manage incoming bookings.
-
-### 🛡️ Administrator Portal
-* **Request Processing:** Review and approve pending provider verification requests.
-* **Administrative Tables:** Unified list controls for **Users**, **Providers**, and **Services**.
-* **Global Actions:** Password reset control, account management, and content moderation.
+The application supports clients, service providers, and administrators through a modular feature-based architecture designed to keep business logic separated from route-level UI.
 
 ---
 
-## 📐 Access Control & Navigation Flow
+## 🚀 Overview
 
-The following diagram illustrates how user roles are authenticated and routed to their respective dashboards:
+The frontend provides a complete booking experience for multiple user roles:
 
-```mermaid
-graph TD
-    A[Visitor] -->|No Account / Not Logged In| B[GuestGuard / Public Pages]
-    B -->|Browse| C[Services & Provider Directories]
-    
-    A -->|Log In| D{Authentication Check}
-    D -->|Invalid Credentials| B
-    D -->|Authenticated User| E[AuthGuard]
-    
-    E -->|Role: Client| F[Client Views / Booking / Stripe Payments]
-    E -->|Role: Provider| G[RoleGuard: Provider Dashboard / Availability Scheduler]
-    E -->|Role: Admin| H[RoleGuard: Admin Dashboard / Request Approvals]
+- Clients can browse services, view providers, create bookings, and manage appointments.
+- Providers can manage services, availability, and incoming bookings.
+- Administrators can review provider requests and manage platform data.
+- Authentication and authorization flows are integrated with a NestJS backend.
+
+---
+
+## ✨ Key Features
+
+### Public Experience
+- Responsive landing page
+- Provider directory
+- Service directory
+- Public provider/service details
+- Role-based onboarding
+
+### Client Portal
+- User authentication
+- Browse services and providers
+- Booking creation
+- Appointment management
+- Stripe checkout flow
+- Booking history
+
+### Provider Portal
+- Provider onboarding
+- Service management
+- Availability scheduling
+- Booking management
+- Provider dashboard
+
+### Admin Portal
+- Provider request review
+- User management
+- Provider management
+- Service management
+- Approval and rejection workflows
+
+---
+
+## 🛠️ Tech Stack
+
+### Core
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+
+### State & Data
+- TanStack React Query v5
+- Axios
+- React Hook Form
+- Zod
+
+### UI
+- Shadcn/UI
+- Base UI
+- Radix UI
+- React Toastify
+
+### Integration
+- Stripe
+- Cloudinary-backed API workflows
+- REST API integration
+
+---
+
+## 🧱 Architecture
+
+The project follows a **feature-based modular structure**.
+
+Instead of placing business logic directly inside route files, each domain is isolated inside its own feature module.
+
+Typical feature structure:
+
+```text
+feature/
+├── dto/
+├── entity/
+├── hooks/
+├── repo/
+├── validations/
+└── views/
 ```
 
----
+This approach improves:
 
-## 🛠️ Tech Stack & Core Dependencies
-
-### Frontend Core
-* **Next.js 16 (App Router):** Leverages server-side data pre-fetching, dynamic route layouts, and search engine optimization.
-* **React 19:** Utilizing the latest Concurrent features and performance improvements.
-* **TypeScript:** Robust static typing across DTOs, API contracts, and React components.
-* **Tailwind CSS 4:** Ultra-modern responsive design with modern utility systems.
-* **Base UI & Radix UI:** Accessible component primitives for menus, modals, select boxes, and dialogs.
-
-### State & Integration
-* **TanStack React Query v5:** Server-state management, automated query caching, invalidation, and mutation flows.
-* **Axios (with interceptors):** Centralized HTTP client configured with cookie session transport (`withCredentials: true`).
-* **Stripe SDK:** Form widgets and checkout validation logic.
-* **React Hook Form & Zod:** Type-safe form validation for credential handling and data editing.
-* **React Toastify:** Interactive push notifications and service status alerts.
+- Maintainability
+- Feature isolation
+- Reusability
+- Easier refactoring
+- Clear separation between UI and data-access logic
 
 ---
 
 ## 📂 Project Structure
 
 ```text
-booking_restructuring/
-├── app/                      # Next.js App Router root
-│   ├── (pages)/              # Structured Route Groups (unaffected URL paths)
-│   │   ├── (auth)/           # Authentication routes (login, register)
-│   │   ├── (user)/           # User profile management (profile, update-info)
-│   │   ├── admin-dashboard/  # Admin analytics & approval control panel
-│   │   ├── provider-dashboard/# Provider scheduling & service listings
-│   │   ├── booking/          # Client booking request & history
-│   │   ├── providers/        # Public provider lists & directory
-│   │   └── services/         # Public service directories
-│   ├── _components/          # Shared components (headers, dialogs, buttons)
-│   ├── _modules/             # Domain-Driven Feature Modules
-│   │   ├── auth/             # Sign-in hook wrappers, validations, custom UI
-│   │   ├── users/            # Profile states, DTOs, password mutation
-│   │   ├── providers/        # Provider hooks, repositories, views
-│   │   ├── services/         # Services CRUD & hook implementations
-│   │   ├── availability/     # Shift-times table, calendar, slot generation
-│   │   ├── booking/          # Booking details, cancel buttons, mutations
-│   │   ├── payment/          # Stripe billing forms & validation
-│   │   ├── notifications/    # Message hooks, toast indicators, alert boxes
-│   │   └── guards/           # Client-side routing protections (Auth, Guest, Role)
-│   ├── globals.css           # Tailwind custom imports and root theme colors
-│   └── layout.tsx            # Main layout importing React Query & Toast providers
-├── components/               # Design System primitives
-│   ├── ui/                   # Reusable atomic UI (Avatar, Button, Card, Tabs, etc.)
-│   └── theme-provider.tsx    # Light/Dark theme configuration wrapper
-├── Providers/                # Next.js Server/Client Provider Wrappers
-│   ├── react-query-provider.tsx # TanStack query instantiation
-│   └── toast-provider.tsx    # React Toastify initialization
-├── lib/                      # Standard utility helper layer (e.g. cn class merger)
-└── utils/                    # Network & Constant Configurations
-    ├── axiosInstance.ts      # Configured Axios instance with interceptors
-    └── constance.ts          # Endpoint hosts and Query Key constants
+app/
+├── (pages)/
+│   ├── (auth)/
+│   ├── (user)/
+│   ├── admin-dashboard/
+│   ├── provider-dashboard/
+│   ├── booking/
+│   ├── providers/
+│   └── services/
+│
+├── _components/
+├── _modules/
+│   ├── auth/
+│   ├── users/
+│   ├── providers/
+│   ├── services/
+│   ├── availability/
+│   ├── booking/
+│   ├── payment/
+│   ├── notifications/
+│   └── guards/
+│
+├── globals.css
+└── layout.tsx
+
+components/
+├── ui/
+└── theme-provider.tsx
+
+Providers/
+├── react-query-provider.tsx
+└── toast-provider.tsx
+
+utils/
+├── axiosInstance.ts
+└── constance.ts
 ```
 
 ---
 
-## ⚙️ Environment Configuration
+## 🔐 Route Protection
 
-The application interfaces with a backend API using `utils/axiosInstance.ts` and `utils/constance.ts`. Create a `.env` or `.env.local` file in the root directory:
+The application includes client-side route guards:
 
-| Environment Variable | Description | Example / Default Value |
-| :--- | :--- | :--- |
-| `NEXT_PUBLIC_API_URL` | Backend REST API host url | `http://localhost:5000` |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Public Stripe test credentials | `pk_test_...` |
-| `NEXT_PUBLIC_STRIPE_SECREAT_KEY` | Secret Stripe credential token | `sk_test_...` |
+- `AuthGuard` — protects authenticated routes
+- `GuestGuard` — blocks authenticated users from login/register pages
+- `RoleGuard` — restricts role-specific routes
+
+Supported roles:
+
+- User
+- Provider
+- Admin
 
 ---
 
-## 🚀 Quick Start Guide
+## 🌐 API Integration
 
-Follow these steps to run the application locally:
+The frontend communicates with the backend through a centralized Axios instance.
 
-### 1. Prerequisites
-Ensure you have the following installed:
-* **Node.js** (v18.x or newer recommended)
-* **pnpm** (preferred package manager)
+Example:
 
-### 2. Install Dependencies
-Run the following command at the root of the project to download all necessary packages:
+```ts
+axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  withCredentials: true,
+});
+```
+
+This keeps API communication consistent across all feature modules.
+
+---
+
+## 💳 Stripe Integration
+
+The frontend uses Stripe's publishable key only.
+
+Example:
+
+```env
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxx
+```
+
+> Stripe secret keys must remain on the backend and should never be exposed through `NEXT_PUBLIC_*` variables.
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env.local` file:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxx
+```
+
+---
+
+## ▶️ Getting Started
+
+### Install dependencies
+
 ```bash
 pnpm install
 ```
 
-### 3. Verify Env Variables
-Make sure your `.env` file exists and contains the correct API and Stripe keys as shown in the Environment Configuration section.
+### Run development server
 
-### 4. Start Development Server
-Boot up the local web server:
 ```bash
 pnpm dev
 ```
-Open **[http://localhost:3000](http://localhost:3000)** in your browser.
+
+Open:
+
+```text
+http://localhost:3000
+```
 
 ---
 
-## 🛠️ Build & Deployment
+## 🏗️ Production Build
 
-### Production Compilation
-Optimize files and bundle assets for production:
 ```bash
 pnpm build
-```
-
-### Run Production Server
-Serve the compiled Next.js build locally:
-```bash
 pnpm start
 ```
 
-### Code Style & Lints
-Validate TypeScript syntax and code format consistency:
+---
+
+## 🧹 Linting
+
 ```bash
 pnpm lint
 ```
 
 ---
 
-## 🧩 Architecture & Design Patterns
+## 🎯 What I Learned
 
-### 1. Decoupled Domain Modules (`app/_modules/`)
-Instead of nesting logic inside page routes, this project groups features by context under `app/_modules/`. Each module typically consists of:
-* **`entity/`**: Types and interfaces representation.
-* **`dto/`**: Data Transfer Objects for network payloads.
-* **`repo/`**: Network request layer (fetching, API routes call).
-* **`hooks/`**: Custom TanStack Query integrations (mutations, query hooks).
-* **`views/`**: Internal/reusable UI blocks specific to that feature set.
+This project was one of my first large full-stack applications using a structured feature-based architecture.
 
-This pattern isolates page routes (which are thin wrappers fetching or mounting views) from the underlying domain logic, making refactoring or styling changes extremely straightforward.
+It helped me gain practical experience with:
 
-### 2. Multi-tier Route Protection
-Client-side routes are protected by components inside `app/_modules/guards`:
-* **`AuthGuard`**: Redirects unauthenticated users to `/login`.
-* **`GuestGuard`**: Restricts authenticated users from viewing sign-in/sign-up forms.
-* **`RoleGuard`**: Ensures only users with the correct role (e.g. `provider` or `admin`) can access administrative modules.
+- Multi-role systems
+- Authentication and authorization flows
+- Feature-based architecture
+- Server-state management
+- Booking workflows
+- Payments
+- Frontend/backend separation
+- Building maintainable applications beyond tutorial-style projects
 
-### 3. Unified Theme Configuration
-Theme switching is supported via `next-themes` and a customized `ThemeProvider` loaded in the root layout. Interactive dark/light mode toggle can be found at `components/ui/mode-toggle-btn.tsx`.
+---
+
+## 📌 Status
+
+The project is actively maintained as a portfolio project and serves as an example of my work with modern full-stack architecture.
+
+---
+
+## 👨‍💻 Author
+
+**Mo'men Alswafiri**
+
+- GitHub: https://github.com/momen-x
+- LinkedIn: https://www.linkedin.com/in/mo’men-alswafiri-8b6491346
